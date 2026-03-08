@@ -1,0 +1,152 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ───────────────────────────────────────────────
+enum Role {
+  CUSTOMER
+  PROVIDER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum OrderStatus {
+  PLACED
+  PREPARING
+  READY
+  DELIVERED
+  CANCELLED
+}
+
+// ─── Users ─────────────────────────────────────────────────
+model User {
+  id        String     @id @default(uuid())
+  name      String
+  email     String     @unique
+  password  String
+  role      Role       @default(CUSTOMER)
+  status    UserStatus @default(ACTIVE)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  providerProfile ProviderProfile?
+  orders          Order[]
+  reviews         Review[]
+
+  @@map("users")
+}
+
+// ─── ProviderProfiles ──────────────────────────────────────
+model ProviderProfile {
+  id           String  @id @default(uuid())
+  userId       String  @unique
+  businessName String
+  description  String?
+  logoUrl      String?
+  address      String?
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  meals Meal[]
+  Order Order[]
+
+  @@map("provider_profiles")
+}
+
+// ─── Categories ────────────────────────────────────────────
+model Category {
+  id       String  @id @default(uuid())
+  name     String  @unique
+  imageUrl String?
+
+  meals Meal[]
+
+  @@map("categories")
+}
+
+// ─── Meals ─────────────────────────────────────────────────
+model Meal {
+  id          String  @id @default(uuid())
+  providerId  String
+  categoryId  String
+  name        String
+  description String?
+  price       Decimal
+  imageUrl    String?
+  isAvailable Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  provider   ProviderProfile @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  category   Category        @relation(fields: [categoryId], references: [id])
+  orderItems OrderItem[]
+  reviews    Review[]
+
+  @@map("meals")
+}
+
+// ─── Orders ────────────────────────────────────────────────
+model Order {
+  id              String      @id @default(uuid())
+  customerId      String
+  providerId      String
+  status          OrderStatus @default(PLACED)
+  deliveryAddress String
+  totalAmount     Decimal
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customer   User            @relation(fields: [customerId], references: [id])
+  provider   ProviderProfile @relation(fields: [providerId], references: [id])
+  items      OrderItem[]
+  reviews    Review[]
+
+  @@map("orders")
+}
+
+// ─── OrderItems ────────────────────────────────────────────
+model OrderItem {
+  id       String  @id @default(uuid())
+  orderId  String
+  mealId   String
+  mealName String
+  price    Decimal
+  quantity Int
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  meal  Meal  @relation(fields: [mealId], references: [id])
+
+  @@map("order_items")
+}
+
+// ─── Reviews ───────────────────────────────────────────────
+model Review {
+  id         String  @id @default(uuid())
+  customerId String
+  mealId     String
+  orderId    String
+  rating     Int
+  comment    String?
+
+  createdAt DateTime @default(now())
+
+  customer User  @relation(fields: [customerId], references: [id])
+  meal     Meal  @relation(fields: [mealId], references: [id])
+  order    Order @relation(fields: [orderId], references: [id])
+
+  @@unique([customerId, mealId])
+  @@map("reviews")
+}
