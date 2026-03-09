@@ -1,6 +1,11 @@
 import status from 'http-status';
 import AppError from '../../errors/AppError';
 import { prisma } from '../../lib/prisma';
+import { cloudinaryUtils } from '../../utils/cloudinary';
+import fs from 'fs';
+import { promisify } from 'util';
+
+const unlinkAsync = promisify(fs.unlink);
 
 interface IMealFilters {
     categoryId?: string;
@@ -112,14 +117,21 @@ const addMeal = async (providerId: string, payload: {
     categoryId: string;
     name: string;
     description?: string;
-    price: number;
+    price: string | number;
     imageUrl?: string;
-}) => {
+}, file?: Express.Multer.File) => {
     const profile = await prisma.providerProfile.findUnique({ where: { userId: providerId } });
     if (!profile) throw new AppError(status.NOT_FOUND as number, 'Provider profile not found.');
 
     const category = await prisma.category.findUnique({ where: { id: payload.categoryId } });
     if (!category) throw new AppError(status.NOT_FOUND as number, 'Category not found.');
+
+    let imageUrl = payload.imageUrl || null;
+
+    if (file) {
+        imageUrl = await cloudinaryUtils.uploadImage(file.path, 'meals');
+        await unlinkAsync(file.path);
+    }
 
     return prisma.meal.create({
         data: {
@@ -127,8 +139,8 @@ const addMeal = async (providerId: string, payload: {
             categoryId: payload.categoryId,
             name: payload.name,
             description: payload.description || null,
-            price: payload.price,
-            imageUrl: payload.imageUrl || null,
+            price: Number(payload.price),
+            imageUrl,
         },
         include: { category: true },
     });
@@ -138,10 +150,10 @@ const updateMeal = async (mealId: string, userId: string, payload: {
     categoryId?: string;
     name?: string;
     description?: string;
-    price?: number;
+    price?: string | number;
     imageUrl?: string;
-    isAvailable?: boolean;
-}) => {
+    isAvailable?: string | boolean;
+}, file?: Express.Multer.File) => {
     const profile = await prisma.providerProfile.findUnique({ where: { userId } });
     if (!profile) throw new AppError(status.NOT_FOUND as number, 'Provider profile not found.');
 
@@ -151,7 +163,23 @@ const updateMeal = async (mealId: string, userId: string, payload: {
         throw new AppError(status.FORBIDDEN as number, 'You can only edit your own meals.');
     }
 
-    return prisma.meal.update({ where: { id: mealId }, data: payload, include: { category: true } });
+    const updateData: any = { ...payload };
+
+    if (payload.price) updateData.price = Number(payload.price);
+    if (payload.isAvailable !== undefined) {
+        updateData.isAvailable = payload.isAvailable === 'true' || payload.isAvailable === true;
+    }
+
+    if (file) {
+        // Delete old image if exists
+        if (meal.imageUrl) {
+            await cloudinaryUtils.deleteImageByUrl(meal.imageUrl);
+        }
+        updateData.imageUrl = await cloudinaryUtils.uploadImage(file.path, 'meals');
+        await unlinkAsync(file.path);
+    }
+
+    return prisma.meal.update({ where: { id: mealId }, data: updateData, include: { category: true } });
 };
 
 const deleteMeal = async (mealId: string, userId: string) => {
@@ -162,6 +190,10 @@ const deleteMeal = async (mealId: string, userId: string) => {
     if (!meal) throw new AppError(status.NOT_FOUND as number, 'Meal not found.');
     if (meal.providerId !== profile.id) {
         throw new AppError(status.FORBIDDEN as number, 'You can only delete your own meals.');
+    }
+
+    if (meal.imageUrl) {
+        await cloudinaryUtils.deleteImageByUrl(meal.imageUrl);
     }
 
     return prisma.meal.delete({ where: { id: mealId } });

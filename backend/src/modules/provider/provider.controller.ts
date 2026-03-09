@@ -15,7 +15,7 @@ const getDashboardStats = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateProfile = catchAsync(async (req: Request, res: Response) => {
-    const result = await ProviderService.updateProfile(req.user.userId, req.body);
+    const result = await ProviderService.updateProfile(req.user.userId, req.body, req.file);
     sendResponse(res, {
         httpStatusCode: httpStatus.OK as number,
         success: true,

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { checkAuth } from '../../middlewares/checkAuth';
 import { MealController } from './meal.controller';
+import { upload } from '../../middlewares/fileUpload';
 
 const router = Router();
 
@@ -11,8 +12,8 @@ router.get('/providers/:id', MealController.getProviderById);
 router.get('/:id', MealController.getMealById);
 
 // Provider routes
-router.post('/provider/meals', checkAuth('PROVIDER'), MealController.addMeal);
-router.put('/provider/meals/:id', checkAuth('PROVIDER'), MealController.updateMeal);
+router.post('/provider/meals', checkAuth('PROVIDER'), upload.single('image'), MealController.addMeal);
+router.put('/provider/meals/:id', checkAuth('PROVIDER'), upload.single('image'), MealController.updateMeal);
 router.delete('/provider/meals/:id', checkAuth('PROVIDER'), MealController.deleteMeal);
 
 export const MealRoutes = router;

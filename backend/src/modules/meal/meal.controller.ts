@@ -39,12 +39,12 @@ const getProviderById = catchAsync(async (req: Request, res: Response) => {
 });
 
 const addMeal = catchAsync(async (req: Request, res: Response) => {
-    const result = await MealService.addMeal(req.user.userId, req.body);
+    const result = await MealService.addMeal(req.user.userId, req.body, req.file);
     sendResponse(res, { httpStatusCode: status.CREATED as number, success: true, message: 'Meal added', data: result });
 });
 
 const updateMeal = catchAsync(async (req: Request, res: Response) => {
-    const result = await MealService.updateMeal(req.params.id as string, req.user.userId, req.body);
+    const result = await MealService.updateMeal(req.params.id as string, req.user.userId, req.body, req.file);
     sendResponse(res, { httpStatusCode: status.OK as number, success: true, message: 'Meal updated', data: result });
 });
 
