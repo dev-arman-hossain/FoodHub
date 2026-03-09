@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Meal, Category } from '@/types';
 import api from '@/lib/axios';
 import MealCard from '@/components/meals/MealCard';
@@ -81,9 +82,9 @@ const Home = () => {
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
-              <button className="px-8 py-4 bg-orange-500 text-white rounded-2xl font-black flex items-center justify-center gap-2 hover:bg-white hover:text-zinc-900 transition-soft shadow-xl shadow-orange-500/20 active:scale-95">
+              <Link href="/meals" className="px-8 py-4 bg-orange-500 text-white rounded-2xl font-black flex items-center justify-center gap-2 hover:bg-white hover:text-zinc-900 transition-soft shadow-xl shadow-orange-500/20 active:scale-95">
                 Order Now <ArrowRight className="w-5 h-5" />
-              </button>
+              </Link>
             </div>
           </motion.div>
         </div>
