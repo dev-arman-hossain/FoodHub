@@ -13,7 +13,8 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    "seed": "ts-node src/utils/run-seed.ts"
+    "seed": "ts-node src/utils/run-seed.ts",
+    "postinstall": "prisma generate"
   },
   "keywords": [
     "express",
