@@ -15,7 +15,7 @@ const toggleUserStatus = catchAsync(async (req: Request, res: Response) => {
     if (!['ACTIVE', 'SUSPENDED'].includes(newStatus)) {
         throw new AppError(status.BAD_REQUEST as number, "Status must be 'ACTIVE' or 'SUSPENDED'.");
     }
-    const result = await AdminService.toggleUserStatus(req.params.id, newStatus);
+    const result = await AdminService.toggleUserStatus(req.params.id as string, newStatus);
     sendResponse(res, { httpStatusCode: status.OK as number, success: true, message: 'User status updated', data: result });
 });
 

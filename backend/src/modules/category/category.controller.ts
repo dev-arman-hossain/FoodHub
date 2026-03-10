@@ -15,12 +15,12 @@ const createCategory = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateCategory = catchAsync(async (req: Request, res: Response) => {
-    const result = await CategoryService.updateCategory(req.params.id, req.body);
+    const result = await CategoryService.updateCategory(req.params.id as string, req.body);
     sendResponse(res, { httpStatusCode: status.OK as number, success: true, message: 'Category updated', data: result });
 });
 
 const deleteCategory = catchAsync(async (req: Request, res: Response) => {
-    await CategoryService.deleteCategory(req.params.id);
+    await CategoryService.deleteCategory(req.params.id as string);
     sendResponse(res, { httpStatusCode: status.OK as number, success: true, message: 'Category deleted' });
 });
 
