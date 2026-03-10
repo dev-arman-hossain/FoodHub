@@ -1,18 +1,28 @@
-NODE_ENV=development
-PORT=5000
+# FoodHub Backend
 
-DATABASE_URL="postgresql://postgres:password@localhost:5432/foodhub?schema=public"
+## Environment Setup
 
-ACCESS_TOKEN_SECRET=your_access_token_secret
-REFRESH_TOKEN_SECRET=your_refresh_token_secret
-ACCESS_TOKEN_EXPIRES_IN=1d
-REFRESH_TOKEN_EXPIRES_IN=7d
+Copy `.env.example` to `.env` and fill in your values:
 
-FRONTEND_URL=http://localhost:3000
+```bash
+cp .env.example .env
+```
 
-ADMIN_EMAIL=admin@foodhub.com
-ADMIN_PASSWORD=Admin@123
+## Database Setup
 
-CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
+Make sure PostgreSQL is running, then run:
+
+```bash
+npm run prisma:migrate
+npm run seed
+```
+
+This will run all Prisma migrations and seed the initial data.
+
+## Running the Server
+
+```bash
+npm run dev
+```
+
+Server runs on `http://localhost:5000`
