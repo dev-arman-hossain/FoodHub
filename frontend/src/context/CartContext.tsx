@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Meal } from '@/types';
+import { toast } from 'sonner';
 
 interface CartItem extends Meal {
     quantity: number;
@@ -34,9 +35,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [items]);
 
     const addItem = (meal: Meal) => {
+        const existing = items.find((item) => item.id === meal.id);
+        if (existing) {
+            toast.success(`${meal.name} quantity updated!`);
+        } else {
+            toast.success(`${meal.name} added to cart!`);
+        }
+
         setItems((prev) => {
-            const existing = prev.find((item) => item.id === meal.id);
-            if (existing) {
+            const existingInPrev = prev.find((item) => item.id === meal.id);
+            if (existingInPrev) {
                 return prev.map((item) =>
                     item.id === meal.id ? { ...item, quantity: item.quantity + 1 } : item
                 );
