@@ -31,6 +31,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${outfit.variable} antialiased font-sans bg-white text-zinc-900`}
+        suppressHydrationWarning
       >
         <AuthProvider>
           <CartProvider>

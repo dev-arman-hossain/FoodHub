@@ -13,19 +13,31 @@ const OrderDetailsPage = () => {
     const { id } = useParams();
     const [order, setOrder] = useState<Order | null>(null);
     const [loading, setLoading] = useState(true);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        const fetchOrder = async () => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        const fetchOrder = async (isPoll = false) => {
             try {
                 const res = await api.get(`/orders/${id}`);
                 setOrder(res.data.data);
             } catch (err) {
                 console.error(err);
             } finally {
-                setLoading(false);
+                if (!isPoll) setLoading(false);
             }
         };
+
         fetchOrder();
+
+        const interval = setInterval(() => {
+            fetchOrder(true);
+        }, 5000); // Polling every 5 seconds
+
+        return () => clearInterval(interval);
     }, [id]);
 
     if (loading) return (
@@ -53,12 +65,21 @@ const OrderDetailsPage = () => {
             </Link>
 
             <div className="space-y-4">
-                <h1 className="text-5xl font-display font-black text-zinc-900 tracking-tight flex items-center gap-4 flex-wrap">
-                    Order #{order.id.slice(-6).toUpperCase()}
+                <div className="flex items-center gap-4 flex-wrap">
+                    <h1 className="text-5xl font-display font-black text-zinc-900 tracking-tight">
+                        Order #{order.id.slice(-6).toUpperCase()}
+                    </h1>
+                    <div className="flex items-center gap-2 bg-orange-50 text-orange-600 px-4 py-1.5 rounded-full border border-orange-100 shadow-sm">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                        </span>
+                        <span className="text-[10px] font-black uppercase tracking-widest">Live Tracking</span>
+                    </div>
                     {isCancelled && <span className="text-sm bg-red-50 text-red-500 px-4 py-1 rounded-full uppercase tracking-widest font-black border border-red-100">Cancelled</span>}
-                </h1>
+                </div>
                 <p className="text-zinc-500 font-medium text-lg flex items-center gap-3">
-                    <Calendar className="w-5 h-5" /> {new Date(order.createdAt).toLocaleString()}
+                    <Calendar className="w-5 h-5" /> {mounted ? new Date(order.createdAt).toLocaleString() : ''}
                 </p>
             </div>
 
