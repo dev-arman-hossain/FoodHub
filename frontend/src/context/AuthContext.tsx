@@ -41,7 +41,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const res = await api.post('/auth/login', { email, password });
         setUser(res.data.data.user);
         if (res.data.data.accessToken) {
-            Cookies.set('accessToken', res.data.data.accessToken, { expires: 7 });
+            Cookies.set('clientToken', res.data.data.accessToken, { expires: 7 });
         }
 
         if (res.data.data.user.role === 'ADMIN') router.push('/admin');
@@ -53,7 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const res = await api.post('/auth/register', data);
         setUser(res.data.data.user);
         if (res.data.data.accessToken) {
-            Cookies.set('accessToken', res.data.data.accessToken, { expires: 7 });
+            Cookies.set('clientToken', res.data.data.accessToken, { expires: 7 });
         }
         
         if (res.data.data.user.role === 'PROVIDER') router.push('/provider/dashboard');
@@ -63,7 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const logout = async () => {
         await api.post('/auth/logout');
         setUser(null);
-        Cookies.remove('accessToken');
+        Cookies.remove('clientToken');
         router.push('/login');
     };
 

@@ -22,7 +22,7 @@ function parseJwt(token: string) {
 
 export function proxyHandler(req: NextRequest) {
     const { pathname } = req.nextUrl;
-    const accessToken = req.cookies.get('accessToken')?.value;
+    const accessToken = req.cookies.get('clientToken')?.value || req.cookies.get('accessToken')?.value;
 
     // Define protected subtrees and their required roles
     const protectionMap: Record<string, string[]> = {
