@@ -26,8 +26,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
             const res = await api.get('/auth/me');
             setUser(res.data.data);
+
+            // If the user's frontend token is missing (e.g. they logged in before the update), sync it now
+            if (!Cookies.get('clientToken')) {
+                try {
+                    const refreshRes = await api.post('/auth/refresh-token');
+                    if (refreshRes.data?.data?.accessToken) {
+                        Cookies.set('clientToken', refreshRes.data.data.accessToken, { expires: 7, path: '/' });
+                    }
+                } catch (e) {
+                    // silently ignore
+                }
+            }
         } catch (err) {
             setUser(null);
+            Cookies.remove('clientToken', { path: '/' });
         } finally {
             setLoading(false);
         }
@@ -41,7 +54,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const res = await api.post('/auth/login', { email, password });
         setUser(res.data.data.user);
         if (res.data.data.accessToken) {
-            Cookies.set('clientToken', res.data.data.accessToken, { expires: 7 });
+            Cookies.set('clientToken', res.data.data.accessToken, { expires: 7, path: '/' });
         }
 
         if (res.data.data.user.role === 'ADMIN') router.push('/admin');
@@ -53,7 +66,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const res = await api.post('/auth/register', data);
         setUser(res.data.data.user);
         if (res.data.data.accessToken) {
-            Cookies.set('clientToken', res.data.data.accessToken, { expires: 7 });
+            Cookies.set('clientToken', res.data.data.accessToken, { expires: 7, path: '/' });
         }
         
         if (res.data.data.user.role === 'PROVIDER') router.push('/provider/dashboard');
@@ -63,7 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const logout = async () => {
         await api.post('/auth/logout');
         setUser(null);
-        Cookies.remove('clientToken');
+        Cookies.remove('clientToken', { path: '/' });
         router.push('/login');
     };
 
