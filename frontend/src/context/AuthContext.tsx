@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@/types';
 import api from '@/lib/axios';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 interface AuthContextType {
     user: User | null;
@@ -39,6 +40,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const login = async (email: string, password: string) => {
         const res = await api.post('/auth/login', { email, password });
         setUser(res.data.data.user);
+        if (res.data.data.accessToken) {
+            Cookies.set('accessToken', res.data.data.accessToken, { expires: 7 });
+        }
+
         if (res.data.data.user.role === 'ADMIN') router.push('/admin');
         else if (res.data.data.user.role === 'PROVIDER') router.push('/provider/dashboard');
         else router.push('/');
@@ -47,6 +52,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const register = async (data: any) => {
         const res = await api.post('/auth/register', data);
         setUser(res.data.data.user);
+        if (res.data.data.accessToken) {
+            Cookies.set('accessToken', res.data.data.accessToken, { expires: 7 });
+        }
+        
         if (res.data.data.user.role === 'PROVIDER') router.push('/provider/dashboard');
         else router.push('/');
     };
@@ -54,6 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const logout = async () => {
         await api.post('/auth/logout');
         setUser(null);
+        Cookies.remove('accessToken');
         router.push('/login');
     };
 
