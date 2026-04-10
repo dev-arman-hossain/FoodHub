@@ -40,6 +40,12 @@ export interface Meal {
     provider?: Partial<ProviderProfile>;
     avgRating?: number | null;
     reviewCount?: number;
+    galleryImages?: string[];
+    preparationTime?: string | null;
+    servingSize?: string | null;
+    spiceLevel?: string | null;
+    cuisineType?: string | null;
+    canReview?: boolean;
 }
 
 export interface Order {
@@ -73,5 +79,5 @@ export interface Review {
     rating: number;
     comment: string | null;
     createdAt: string;
-    customer?: { name: string };
+    customer?: { name: string; avatar?: string; id?: string };
 }

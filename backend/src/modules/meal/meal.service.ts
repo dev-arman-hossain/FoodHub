@@ -90,14 +90,14 @@ const getAllMeals = async (filters: IMealFilters) => {
     };
 };
 
-const getMealById = async (id: string) => {
+const getMealById = async (id: string, userId?: string) => {
     const meal = await prisma.meal.findUnique({
         where: { id },
         include: {
             category: true,
             provider: { select: { businessName: true, address: true, logoUrl: true, description: true } },
             reviews: {
-                include: { customer: { select: { name: true, id: true } } },
+                include: { customer: { select: { name: true, id: true, avatar: true } } },
                 orderBy: { createdAt: 'desc' },
             },
         },
@@ -105,11 +105,26 @@ const getMealById = async (id: string) => {
 
     if (!meal) throw new AppError(status.NOT_FOUND as number, 'Meal not found.');
 
+    let canReview = false;
+    if (userId) {
+        const hasOrdered = await prisma.order.findFirst({
+            where: {
+                customerId: userId,
+                status: 'DELIVERED',
+                items: { some: { mealId: id } },
+            },
+        });
+        const hasReviewed = await prisma.review.findUnique({
+            where: { customerId_mealId: { customerId: userId, mealId: id } },
+        });
+        canReview = !!hasOrdered && !hasReviewed;
+    }
+
     const avgRating = meal.reviews.length
         ? meal.reviews.reduce((sum, r) => sum + r.rating, 0) / meal.reviews.length
         : null;
 
-    return { ...meal, avgRating, reviewCount: meal.reviews.length };
+    return { ...meal, avgRating, reviewCount: meal.reviews.length, canReview };
 };
 
 const getAllProviders = async () => {
@@ -145,6 +160,11 @@ const addMeal = async (providerId: string, payload: {
     description?: string;
     price: string | number;
     imageUrl?: string;
+    galleryImages?: string[];
+    preparationTime?: string;
+    servingSize?: string;
+    spiceLevel?: string;
+    cuisineType?: string;
 }, file?: Express.Multer.File) => {
     const profile = await prisma.providerProfile.findUnique({ where: { userId: providerId } });
     if (!profile) throw new AppError(status.NOT_FOUND as number, 'Provider profile not found.');
@@ -167,6 +187,11 @@ const addMeal = async (providerId: string, payload: {
             description: payload.description || null,
             price: Number(payload.price),
             imageUrl,
+            galleryImages: payload.galleryImages || [],
+            preparationTime: payload.preparationTime || null,
+            servingSize: payload.servingSize || null,
+            spiceLevel: payload.spiceLevel || null,
+            cuisineType: payload.cuisineType || null,
         },
         include: { category: true },
     });

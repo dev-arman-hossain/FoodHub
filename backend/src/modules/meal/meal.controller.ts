@@ -3,6 +3,8 @@ import status from 'http-status';
 import { catchAsync } from '../../utils/catchAsync';
 import { sendResponse } from '../../utils/sendResponse';
 import { MealService } from './meal.service';
+import { jwtUtils } from '../../utils/jwt';
+import { envVars } from '../../config/env';
 
 const getAllMeals = catchAsync(async (req: Request, res: Response) => {
     const { categoryId, minPrice, maxPrice, search, sortBy, minRating, isAvailable, page, limit } = req.query;
@@ -27,11 +29,6 @@ const getAllMeals = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
-const getMealById = catchAsync(async (req: Request, res: Response) => {
-    const result = await MealService.getMealById(req.params.id as string);
-    res.setHeader('Cache-Control', 'public, max-age=60');
-    sendResponse(res, { httpStatusCode: status.OK as number, success: true, message: 'Meal fetched', data: result });
-});
 
 const getAllProviders = catchAsync(async (req: Request, res: Response) => {
     const result = await MealService.getAllProviders();
@@ -43,6 +40,27 @@ const getProviderById = catchAsync(async (req: Request, res: Response) => {
     const result = await MealService.getProviderById(req.params.id as string);
     res.setHeader('Cache-Control', 'public, max-age=60');
     sendResponse(res, { httpStatusCode: status.OK as number, success: true, message: 'Provider fetched', data: result });
+});
+
+const getMealById = catchAsync(async (req: Request, res: Response) => {
+    // Optionally get user for canReview check
+    let userId: string | undefined;
+    const accessToken = req.cookies?.accessToken;
+    if (accessToken) {
+        const verified = jwtUtils.verifyToken(accessToken, envVars.ACCESS_TOKEN_SECRET);
+        if (verified.success && verified.data) {
+            userId = (verified.data as any).userId;
+        }
+    }
+
+    const result = await MealService.getMealById(req.params.id as string, userId);
+
+    sendResponse(res, {
+        httpStatusCode: status.OK,
+        success: true,
+        message: 'Meal fetched successfully',
+        data: result,
+    });
 });
 
 const addMeal = catchAsync(async (req: Request, res: Response) => {

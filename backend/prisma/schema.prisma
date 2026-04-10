@@ -85,6 +85,11 @@ model Meal {
   description String?
   price       Decimal
   imageUrl    String?
+  galleryImages String[] @default([])
+  preparationTime String?
+  servingSize     String?
+  spiceLevel      String?
+  cuisineType     String?
   isAvailable Boolean @default(true)
   avgRating   Float   @default(0)
   reviewCount Int     @default(0)
