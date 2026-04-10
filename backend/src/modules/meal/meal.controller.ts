@@ -14,6 +14,7 @@ const getAllMeals = catchAsync(async (req: Request, res: Response) => {
         page: page ? Number(page) : 1,
         limit: limit ? Number(limit) : 12,
     });
+    res.setHeader('Cache-Control', 'public, max-age=60');
     sendResponse(res, {
         httpStatusCode: status.OK as number,
         success: true,
@@ -25,16 +26,19 @@ const getAllMeals = catchAsync(async (req: Request, res: Response) => {
 
 const getMealById = catchAsync(async (req: Request, res: Response) => {
     const result = await MealService.getMealById(req.params.id as string);
+    res.setHeader('Cache-Control', 'public, max-age=60');
     sendResponse(res, { httpStatusCode: status.OK as number, success: true, message: 'Meal fetched', data: result });
 });
 
 const getAllProviders = catchAsync(async (req: Request, res: Response) => {
     const result = await MealService.getAllProviders();
+    res.setHeader('Cache-Control', 'public, max-age=60');
     sendResponse(res, { httpStatusCode: status.OK as number, success: true, message: 'Providers fetched', data: result });
 });
 
 const getProviderById = catchAsync(async (req: Request, res: Response) => {
     const result = await MealService.getProviderById(req.params.id as string);
+    res.setHeader('Cache-Control', 'public, max-age=60');
     sendResponse(res, { httpStatusCode: status.OK as number, success: true, message: 'Provider fetched', data: result });
 });
 

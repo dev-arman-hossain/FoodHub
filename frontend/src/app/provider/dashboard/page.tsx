@@ -7,6 +7,8 @@ import { Package, ShoppingBag, DollarSign, TrendingUp, Clock, ChevronRight, Plus
 import { formatPrice, cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { StatSkeleton } from '@/components/shared/StatSkeleton';
+import { TableSkeleton } from '@/components/shared/TableSkeleton';
 
 const ProviderDashboard = () => {
     const { user } = useAuth();
@@ -51,10 +53,9 @@ const ProviderDashboard = () => {
                 </div>
             </div>
 
-            {/* Stats Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {loading ? (
-                    [...Array(4)].map((_, i) => <div key={i} className="h-40 bg-zinc-50 animate-pulse rounded-[40px]" />)
+                    [...Array(4)].map((_, i) => <StatSkeleton key={i} />)
                 ) : (
                     statCards.map((card, idx) => (
                         <motion.div
@@ -94,7 +95,7 @@ const ProviderDashboard = () => {
 
                     <div className="bg-white rounded-[40px] border border-zinc-100 overflow-hidden shadow-xl shadow-zinc-200/30">
                         {loading ? (
-                            <div className="p-20 text-center animate-pulse text-zinc-300 font-black">Loading Orders...</div>
+                            <TableSkeleton rows={3} />
                         ) : stats?.recentOrders?.length > 0 ? (
                             <div className="divide-y divide-zinc-50">
                                 {stats.recentOrders.map((order: any) => (

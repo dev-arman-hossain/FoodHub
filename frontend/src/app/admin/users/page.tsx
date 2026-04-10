@@ -6,6 +6,7 @@ import { User } from '@/types';
 import { Users, Shield, ShieldAlert, CheckCircle, XCircle, Search, Mail, Calendar, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { TableSkeleton } from '@/components/shared/TableSkeleton';
 
 const AdminUsersPage = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -66,9 +67,7 @@ const AdminUsersPage = () => {
             </div>
 
             {loading ? (
-                <div className="space-y-4">
-                    {[...Array(5)].map((_, i) => <div key={i} className="h-20 bg-zinc-50 animate-pulse rounded-2xl" />)}
-                </div>
+                <TableSkeleton rows={8} />
             ) : (
                 <div className="bg-white rounded-[40px] border border-zinc-100 overflow-hidden shadow-xl shadow-zinc-200/20">
                     <table className="w-full text-left">

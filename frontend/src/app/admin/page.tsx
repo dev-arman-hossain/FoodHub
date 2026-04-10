@@ -7,6 +7,7 @@ import { Users, ShoppingBag, DollarSign, Activity, ChevronRight, LayoutGrid, Shi
 import { formatPrice, cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { StatSkeleton } from '@/components/shared/StatSkeleton';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState<any>(null);
@@ -42,7 +43,7 @@ const AdminDashboard = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {loading ? (
-                    [...Array(4)].map((_, i) => <div key={i} className="h-44 bg-zinc-50 animate-pulse rounded-[40px]" />)
+                    [...Array(4)].map((_, i) => <StatSkeleton key={i} />)
                 ) : (
                     cards.map((card, idx) => (
                         <motion.div

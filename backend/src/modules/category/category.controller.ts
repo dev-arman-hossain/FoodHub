@@ -6,6 +6,7 @@ import { CategoryService } from './category.service';
 
 const getAllCategories = catchAsync(async (req: Request, res: Response) => {
     const result = await CategoryService.getAllCategories();
+    res.setHeader('Cache-Control', 'public, max-age=60');
     sendResponse(res, { httpStatusCode: status.OK as number, success: true, message: 'Categories fetched', data: result });
 });
 

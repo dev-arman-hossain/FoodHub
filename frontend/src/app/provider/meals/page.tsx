@@ -6,6 +6,7 @@ import { Meal, Category } from '@/types';
 import { Package, Trash2, Edit3, Plus, Search, ChevronRight, X, Loader2, Image as ImageIcon } from 'lucide-react';
 import { formatPrice, cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { CardSkeleton } from '@/components/shared/CardSkeleton';
 
 const ProviderMealsPage = () => {
     const [meals, setMeals] = useState<Meal[]>([]);
@@ -108,7 +109,7 @@ const ProviderMealsPage = () => {
 
             {loading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {[...Array(6)].map((_, i) => <div key={i} className="h-64 bg-zinc-50 animate-pulse rounded-[40px]" />)}
+                    {[...Array(6)].map((_, i) => <CardSkeleton key={i} />)}
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">

@@ -6,6 +6,7 @@ import ProviderCard from '../providers/ProviderCard';
 import { ArrowRight, Search } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/lib/axios';
+import { apiFetch } from '@/lib/api-fetch';
 
 const TopProviders = () => {
   const [providers, setProviders] = useState<any[]>([]);
@@ -14,9 +15,11 @@ const TopProviders = () => {
   useEffect(() => {
     const fetchProviders = async () => {
       try {
-        const res = await api.get('/meals/providers');
+        const res = await apiFetch<any>('/meals/providers', {
+          next: { revalidate: 60 }
+        });
         // Take only top 4 for the home page
-        setProviders(res.data.data.slice(0, 4));
+        setProviders(res.data.slice(0, 4));
       } catch (err) {
         console.error('Error fetching providers:', err);
       } finally {

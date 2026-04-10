@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Meal, Category } from '@/types';
 import api from '@/lib/axios';
+import { apiFetch } from '@/lib/api-fetch';
 import MealCard from '@/components/meals/MealCard';
 import { Search, SlidersHorizontal, ArrowRight, Star, Clock, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -16,6 +17,7 @@ import TestimonialsSection from '@/components/home/TestimonialsSection';
 import BlogSection from '@/components/home/BlogSection';
 import NewsletterSection from '@/components/home/NewsletterSection';
 import FAQSection from '@/components/home/FAQSection';
+import { CardSkeleton } from '@/components/shared/CardSkeleton';
 
 const Home = () => {
   const [meals, setMeals] = useState<Meal[]>([]);
@@ -27,17 +29,20 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [mealsRes, catsRes] = await Promise.all([
-          api.get('/meals', {
+        const [mealsData, catsData] = await Promise.all([
+          apiFetch<any>('/meals', {
             params: {
               categoryId: selectedCategory || undefined,
               search: search || undefined,
             },
+            next: { revalidate: 60 }
           }),
-          api.get('/categories'),
+          apiFetch<any>('/categories', {
+            next: { revalidate: 3600 } // Categories change less often
+          }),
         ]);
-        setMeals(mealsRes.data.data);
-        setCategories(catsRes.data.data);
+        setMeals(mealsData.data);
+        setCategories(catsData.data);
       } catch (err) {
         console.error(err);
       } finally {
@@ -138,7 +143,7 @@ const Home = () => {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="h-96 bg-zinc-100 animate-pulse rounded-3xl" />
+              <CardSkeleton key={i} />
             ))}
           </div>
         ) : meals.length > 0 ? (

@@ -6,6 +6,7 @@ import { Order } from '@/types';
 import { ShoppingBag, Clock, MapPin, User as UserIcon, CheckCircle2, Truck, Utensils, XCircle, ChevronDown, Loader2 } from 'lucide-react';
 import { formatPrice, cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { OrderSkeleton } from '@/components/shared/OrderSkeleton';
 
 const ProviderOrdersPage = () => {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -49,8 +50,8 @@ const ProviderOrdersPage = () => {
             </div>
 
             {loading ? (
-                <div className="space-y-6">
-                    {[...Array(3)].map((_, i) => <div key={i} className="h-64 bg-zinc-50 animate-pulse rounded-[40px]" />)}
+                <div className="space-y-8">
+                    {[...Array(3)].map((_, i) => <OrderSkeleton key={i} />)}
                 </div>
             ) : orders.length > 0 ? (
                 <div className="space-y-8">

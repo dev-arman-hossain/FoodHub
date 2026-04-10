@@ -2,9 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import api from '@/lib/axios';
+import { apiFetch } from '@/lib/api-fetch';
 import ProviderCard from '@/components/providers/ProviderCard';
 import { Search, MapPin, Store } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { CardSkeleton } from '@/components/shared/CardSkeleton';
 
 const ProvidersPage = () => {
     const [providers, setProviders] = useState<any[]>([]);
@@ -14,8 +16,10 @@ const ProvidersPage = () => {
     useEffect(() => {
         const fetchProviders = async () => {
             try {
-                const res = await api.get('/meals/providers');
-                setProviders(res.data.data);
+                const res = await apiFetch<any>('/meals/providers', {
+                    next: { revalidate: 60 }
+                });
+                setProviders(res.data);
             } catch (err) {
                 console.error(err);
             } finally {
@@ -80,7 +84,7 @@ const ProvidersPage = () => {
                 {loading ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                         {[...Array(6)].map((_, i) => (
-                            <div key={i} className="h-[480px] bg-white/50 backdrop-blur-sm border border-zinc-100 animate-pulse rounded-[3rem]" />
+                            <CardSkeleton key={i} />
                         ))}
                     </div>
                 ) : filteredProviders.length > 0 ? (

@@ -4,10 +4,12 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Meal, Category } from '@/types';
 import api from '@/lib/axios';
+import { apiFetch } from '@/lib/api-fetch';
 import MealCard from '@/components/meals/MealCard';
 import { Search, Utensils, SlidersHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { CardSkeleton } from '@/components/shared/CardSkeleton';
 
 const MealsContent = () => {
     const searchParams = useSearchParams();
@@ -23,17 +25,20 @@ const MealsContent = () => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const [mealsRes, catsRes] = await Promise.all([
-                    api.get('/meals', {
+                const [mealsData, catsData] = await Promise.all([
+                    apiFetch<any>('/meals', {
                         params: {
                             categoryId: selectedCategory || undefined,
                             search: search || undefined,
                         },
+                        next: { revalidate: 60 }
                     }),
-                    api.get('/categories'),
+                    apiFetch<any>('/categories', {
+                        next: { revalidate: 3600 }
+                    }),
                 ]);
-                setMeals(mealsRes.data.data);
-                setCategories(catsRes.data.data);
+                setMeals(mealsData.data);
+                setCategories(catsData.data);
             } catch (err) {
                 console.error(err);
             } finally {
@@ -115,7 +120,7 @@ const MealsContent = () => {
                         {loading ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                                 {[...Array(6)].map((_, i) => (
-                                    <div key={i} className="h-[420px] bg-white border border-zinc-100 animate-pulse rounded-[32px]" />
+                                    <CardSkeleton key={i} />
                                 ))}
                             </div>
                         ) : meals.length > 0 ? (
