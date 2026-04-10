@@ -5,13 +5,15 @@ import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { Mail, Lock, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { GoogleLogin } from '@react-oauth/google';
+import { toast } from 'sonner';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const { login } = useAuth();
+    const { login, googleLogin } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -26,6 +28,20 @@ const LoginPage = () => {
         }
     };
 
+    const handleGoogleSuccess = async (credentialResponse: any) => {
+        setLoading(true);
+        setError('');
+        try {
+            await googleLogin(credentialResponse.credential);
+            toast.success('Signed in with Google successfully!');
+        } catch (err: any) {
+            setError(err.response?.data?.message || 'Google Login failed');
+            toast.error('Google Login failed');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="min-h-[calc(100vh-80px)] flex items-center justify-center px-6 py-20 bg-zinc-50">
             <motion.div
@@ -34,7 +50,7 @@ const LoginPage = () => {
                 className="w-full max-w-md bg-white rounded-[40px] shadow-2xl shadow-zinc-200/50 border border-zinc-100 p-10 md:p-14 space-y-10"
             >
                 <div className="text-center space-y-2">
-                    <h2 className="text-zinc-900">Welcome Back</h2>
+                    <h2 className="text-zinc-900 font-black">Welcome Back</h2>
                     <p className="text-zinc-500 font-medium">Log in to your FoodHub account</p>
                 </div>
 
@@ -47,7 +63,7 @@ const LoginPage = () => {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-1.5">
-                        <label className="px-1">Email Address</label>
+                        <label className="px-1 text-sm font-bold text-zinc-700">Email Address</label>
                         <div className="relative">
                             <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
                             <input
@@ -63,7 +79,7 @@ const LoginPage = () => {
 
                     <div className="space-y-1.5">
                         <div className="flex items-center justify-between px-1">
-                            <label className="">Password</label>
+                            <label className="text-sm font-bold text-zinc-700">Password</label>
                             <Link href="#" className="text-xs font-bold text-orange-500 hover:text-orange-600">Forgot?</Link>
                         </div>
                         <div className="relative">
@@ -91,6 +107,30 @@ const LoginPage = () => {
                         )}
                     </button>
                 </form>
+
+
+                <div className="relative my-6">
+                    <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-zinc-100"></div>
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-white px-4 text-zinc-400 font-bold">Or continue with</span>
+                    </div>
+                </div>
+
+                <div className="flex justify-center w-full">
+                    <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={() => {
+                            setError('Google Login Failed');
+                            toast.error('Google Login Failed');
+                        }}
+                        theme="filled_blue"
+                        shape="pill"
+                        size="large"
+                        width="100%"
+                    />
+                </div>
 
                 <p className="text-center text-sm font-bold text-zinc-500">
                     Don&apos;t have an account? <Link href="/register" className="text-orange-500 hover:text-orange-600">Join now</Link>

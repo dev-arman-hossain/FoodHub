@@ -6,6 +6,7 @@ import { CartProvider } from "@/context/CartContext";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import { Toaster } from "sonner";
+import GoogleProvider from "@/components/providers/GoogleAuthProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -37,16 +38,18 @@ export default function RootLayout({
         className={`${inter.variable} ${outfit.variable} antialiased font-sans bg-white text-zinc-900`}
         suppressHydrationWarning
       >
-        <AuthProvider>
-          <CartProvider>
-            <div className="flex flex-col min-h-screen">
-              <Navbar />
-              <main className="grow">{children}</main>
-              <Footer />
-            </div>
-            <Toaster position="top-center" richColors />
-          </CartProvider>
-        </AuthProvider>
+        <GoogleProvider>
+          <AuthProvider>
+            <CartProvider>
+              <div className="flex flex-col min-h-screen">
+                <Navbar />
+                <main className="grow">{children}</main>
+                <Footer />
+              </div>
+              <Toaster position="top-center" richColors />
+            </CartProvider>
+          </AuthProvider>
+        </GoogleProvider>
       </body>
     </html>
   );

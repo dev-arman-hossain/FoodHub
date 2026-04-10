@@ -37,6 +37,7 @@ model User {
   email     String     @unique
   password  String
   role      Role       @default(CUSTOMER)
+  avatar    String?
   status    UserStatus @default(ACTIVE)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt

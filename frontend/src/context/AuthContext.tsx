@@ -10,6 +10,7 @@ interface AuthContextType {
     user: User | null;
     loading: boolean;
     login: (email: string, password: string) => Promise<void>;
+    googleLogin: (idToken: string) => Promise<void>;
     register: (data: any) => Promise<void>;
     logout: () => Promise<void>;
     refreshUser: () => Promise<void>;
@@ -62,6 +63,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         else router.push('/');
     };
 
+    const googleLogin = async (idToken: string) => {
+        const res = await api.post('/auth/google-login', { idToken });
+        setUser(res.data.data.user);
+        if (res.data.data.accessToken) {
+            Cookies.set('clientToken', res.data.data.accessToken, { expires: 7, path: '/' });
+        }
+
+        if (res.data.data.user.role === 'ADMIN') router.push('/admin');
+        else if (res.data.data.user.role === 'PROVIDER') router.push('/provider/dashboard');
+        else router.push('/');
+    };
+
     const register = async (data: any) => {
         const res = await api.post('/auth/register', data);
         setUser(res.data.data.user);
@@ -81,7 +94,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser }}>
+        <AuthContext.Provider value={{ user, loading, login, googleLogin, register, logout, refreshUser }}>
             {children}
         </AuthContext.Provider>
     );

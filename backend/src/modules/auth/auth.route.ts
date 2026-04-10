@@ -7,6 +7,7 @@ import { loginZodSchema, registerZodSchema } from './auth.validation';
 const router = Router();
 
 router.post('/register', validateRequest(registerZodSchema), AuthController.register);
+router.post('/google-login', AuthController.googleLogin);
 router.post('/login', validateRequest(loginZodSchema), AuthController.login);
 router.get('/me', checkAuth(), AuthController.getMe);
 router.post('/logout', checkAuth(), AuthController.logout);
