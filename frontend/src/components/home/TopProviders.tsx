@@ -1,51 +1,31 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import ProviderCard from '../providers/ProviderCard';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Search } from 'lucide-react';
 import Link from 'next/link';
-
-const dummyProviders = [
-  {
-    id: '1',
-    businessName: 'The Golden Whisk',
-    description: 'Artisanal pastries and gourmet breakfast sets crafted with love.',
-    logoUrl: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80',
-    address: '123 Baker Street, London',
-    user: { name: 'Chef Julian' },
-    meals: [1, 2, 3, 4, 5],
-  },
-  {
-    id: '2',
-    businessName: 'Sushi ZenMaster',
-    description: 'Authentic Japanese sushi and sashimi prepared by master chefs.',
-    logoUrl: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&q=80',
-    address: '456 Kyoto Lane, Tokyo',
-    user: { name: 'Kenji Suzuki' },
-    meals: [1, 2, 3, 4, 5, 6, 7],
-  },
-  {
-    id: '3',
-    businessName: 'Rustic Italia',
-    description: 'Traditional wood-fired pizzas and handmade pasta from the heart of Italy.',
-    logoUrl: 'https://images.unsplash.com/photo-1510629954389-c1e0da47d414?auto=format&fit=crop&q=80',
-    address: '789 Roman Way, Rome',
-    user: { name: 'Marco Rossi' },
-    meals: [1, 2, 3, 4],
-  },
-  {
-    id: '4',
-    businessName: 'Spice Route',
-    description: 'Vibrant and authentic Indian cuisine bursting with exotic flavors.',
-    logoUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80',
-    address: '101 Curry Drive, Mumbai',
-    user: { name: 'Priya Sharma' },
-    meals: [1, 2, 3, 4, 5, 6],
-  },
-];
+import api from '@/lib/axios';
 
 const TopProviders = () => {
+  const [providers, setProviders] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProviders = async () => {
+      try {
+        const res = await api.get('/meals/providers');
+        // Take only top 4 for the home page
+        setProviders(res.data.data.slice(0, 4));
+      } catch (err) {
+        console.error('Error fetching providers:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProviders();
+  }, []);
+
   return (
     <section className="py-24 bg-zinc-950 text-white overflow-hidden">
       <div className="container mx-auto px-6">
@@ -83,20 +63,37 @@ const TopProviders = () => {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {dummyProviders.map((provider, index) => (
-            <motion.div
-              key={provider.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-            >
-              {/* Note: ProviderCard is designed for light mode, so I'll wrap it if needed or let it stand out as a card */}
-              <ProviderCard provider={provider} />
-            </motion.div>
-          ))}
-        </div>
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-[480px] bg-white/5 rounded-[2.5rem] border border-white/10 animate-pulse" />
+            ))}
+          </div>
+        ) : providers.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {providers.map((provider, index) => (
+              <motion.div
+                key={provider.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <ProviderCard provider={provider} />
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="h-96 flex flex-col items-center justify-center text-center space-y-6 bg-white/5 rounded-[3rem] border border-white/10">
+            <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center">
+              <Search className="w-8 h-8 text-zinc-500" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-2xl font-display font-bold">No providers found</h3>
+              <p className="text-zinc-500 font-medium">We couldn&apos;t find any active food providers at the moment.</p>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
