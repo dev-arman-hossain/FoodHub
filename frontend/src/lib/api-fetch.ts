@@ -5,7 +5,7 @@ export type FetchOptions = RequestInit & {
     revalidate?: number | false;
     tags?: string[];
   };
-  params?: Record<string, string | number | undefined>;
+  params?: Record<string, string | number | boolean | undefined>;
 };
 
 export async function apiFetch<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
