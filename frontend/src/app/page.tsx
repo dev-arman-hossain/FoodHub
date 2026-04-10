@@ -8,6 +8,14 @@ import MealCard from '@/components/meals/MealCard';
 import { Search, SlidersHorizontal, ArrowRight, Star, Clock, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import HowItWorks from '@/components/home/HowItWorks';
+import StatsSection from '@/components/home/StatsSection';
+import FeaturesSection from '@/components/home/FeaturesSection';
+import TopProviders from '@/components/home/TopProviders';
+import TestimonialsSection from '@/components/home/TestimonialsSection';
+import BlogSection from '@/components/home/BlogSection';
+import NewsletterSection from '@/components/home/NewsletterSection';
+import FAQSection from '@/components/home/FAQSection';
 
 const Home = () => {
   const [meals, setMeals] = useState<Meal[]>([]);
@@ -149,6 +157,16 @@ const Home = () => {
           </div>
         )}
       </section>
+
+      {/* New Sections */}
+      <HowItWorks />
+      <StatsSection />
+      <FeaturesSection />
+      <TopProviders />
+      <TestimonialsSection />
+      <BlogSection />
+      <NewsletterSection />
+      <FAQSection />
     </div>
   );
 };
