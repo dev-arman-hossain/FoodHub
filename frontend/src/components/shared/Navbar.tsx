@@ -13,7 +13,7 @@ const Navbar = () => {
 
     return (
         <header className="sticky top-0 z-50 w-full glass border-b border-zinc-200/50">
-            <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+            <div className="container mx-auto h-20 flex items-center justify-between">
                 <Link href="/" className="flex items-center gap-2 group">
                     <div className="p-2 bg-orange-500 rounded-xl group-hover:rotate-12 transition-soft">
                         <UtensilsCrossed className="w-6 h-6 text-white" />

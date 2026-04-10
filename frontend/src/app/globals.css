@@ -5,11 +5,41 @@
   --font-display: var(--font-outfit);
 }
 
+/* ─── Global Container ─────────────────────────────────────────────────── */
+@layer base {
+  .container {
+    max-width: 1440px;
+    padding-left: 1rem;
+    /* px-4 mobile */
+    padding-right: 1rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem;
+    /* px-6 tablet */
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 2rem;
+    /* px-8 desktop */
+    padding-right: 2rem;
+  }
+}
+
 :root {
-  --primary: #f97316; /* Orange 500 */
-  --primary-hover: #ea580c; /* Orange 600 */
-  --secondary: #0f172a; /* Slate 900 */
-  --accent: #facc15; /* Yellow 400 */
+  --primary: #f97316;
+  /* Orange 500 */
+  --primary-hover: #ea580c;
+  /* Orange 600 */
+  --secondary: #0f172a;
+  /* Slate 900 */
+  --accent: #facc15;
+  /* Yellow 400 */
   --background: #ffffff;
   --foreground: #09090b;
   --card: #ffffff;
@@ -17,20 +47,24 @@
   --border: #e4e4e7;
   --input: #e4e4e7;
   --ring: #f97316;
-  --skeleton-base: #e4e4e7; /* Zinc 200 */
-  --skeleton-shimmer: #d4d4d8; /* Zinc 300 */
+  --skeleton-base: #e4e4e7;
+  /* Zinc 200 */
+  --skeleton-shimmer: #d4d4d8;
+  /* Zinc 300 */
 }
 
 .dark {
-  --skeleton-base: #374151; /* Gray 700 */
-  --skeleton-shimmer: #4b5563; /* Gray 600 */
+  --skeleton-base: #374151;
+  /* Gray 700 */
+  --skeleton-shimmer: #4b5563;
+  /* Gray 600 */
 }
 
 @layer base {
   * {
     border-color: var(--border);
   }
-  
+
   html {
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
@@ -45,17 +79,34 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, .font-display {
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
     font-weight: 900;
   }
 
-  h1 { @apply text-4xl md:text-5xl lg:text-6xl leading-[1.1]; }
-  h2 { @apply text-3xl md:text-4xl leading-tight; }
-  h3 { @apply text-xl md:text-2xl leading-snug; }
-  
-  p, span, li, input, textarea, button {
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl leading-[1.1];
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl leading-tight;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl leading-snug;
+  }
+
+  p,
+  span,
+  li,
+  input,
+  textarea,
+  button {
     @apply font-sans;
   }
 
@@ -63,7 +114,8 @@
     @apply text-xs font-black uppercase tracking-widest text-zinc-500 select-none;
   }
 
-  input, textarea {
+  input,
+  textarea {
     @apply placeholder:text-zinc-400 font-medium;
   }
 }
@@ -89,25 +141,33 @@
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #d4d4d8;
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #a1a1aa;
 }
+
 @layer utilities {
   @keyframes skeleton-pulse {
-    0%, 100% {
+
+    0%,
+    100% {
       background-color: var(--skeleton-base);
     }
+
     50% {
       background-color: var(--skeleton-shimmer);
     }
   }
+
   .animate-skeleton-pulse {
     animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
