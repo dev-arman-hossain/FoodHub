@@ -7,7 +7,8 @@ interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
 export function Skeleton({ className, ...props }: SkeletonProps) {
   return (
     <div
-      className={cn("animate-pulse rounded-md bg-zinc-200/60 dark:bg-zinc-800/60", className)}
+      className={cn("animate-skeleton-pulse rounded-md", className)}
+      style={{ backgroundColor: 'var(--skeleton-base)' }}
       {...props}
     />
   );

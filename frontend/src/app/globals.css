@@ -17,6 +17,13 @@
   --border: #e4e4e7;
   --input: #e4e4e7;
   --ring: #f97316;
+  --skeleton-base: #e4e4e7; /* Zinc 200 */
+  --skeleton-shimmer: #d4d4d8; /* Zinc 300 */
+}
+
+.dark {
+  --skeleton-base: #374151; /* Gray 700 */
+  --skeleton-shimmer: #4b5563; /* Gray 600 */
 }
 
 @layer base {
@@ -59,4 +66,17 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #a1a1aa;
+}
+@layer utilities {
+  @keyframes skeleton-pulse {
+    0%, 100% {
+      background-color: var(--skeleton-base);
+    }
+    50% {
+      background-color: var(--skeleton-shimmer);
+    }
+  }
+  .animate-skeleton-pulse {
+    animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
 }
