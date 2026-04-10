@@ -75,7 +75,7 @@ const Home = () => {
               <span className="flex items-center gap-2 text-orange-500 font-bold uppercase tracking-[0.2em] text-sm">
                 <span className="w-10 h-px bg-orange-500" /> Premium Quality
               </span>
-              <h1 className="text-6xl md:text-7xl font-display font-black text-white leading-tight">
+              <h1 className="text-white">
                 Gourmet Food <br />
                 <span className="heading-gradient italic">Delivered.</span>
               </h1>
@@ -107,7 +107,7 @@ const Home = () => {
       <section className="container mx-auto px-6 space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-1">
-            <h2 className="text-4xl font-display font-black text-zinc-900 tracking-tight">Browse by Category</h2>
+            <h2 className="text-zinc-900">Browse by Category</h2>
             <p className="text-zinc-500 font-medium text-lg">Hand-picked selections from local culinary experts</p>
           </div>
           <div className="flex items-center gap-2 overflow-x-auto pb-4 md:pb-0 no-scrollbar">
@@ -157,7 +157,7 @@ const Home = () => {
             <div className="w-20 h-20 bg-zinc-50 rounded-full flex items-center justify-center">
               <Search className="w-8 h-8 text-zinc-300" />
             </div>
-            <h3 className="text-xl font-display font-bold text-zinc-900">No meals found</h3>
+            <h3 className="text-zinc-900">No meals found</h3>
             <p className="text-zinc-500 font-medium">Try adjusting your search or filters to find what you&apos;re looking for.</p>
           </div>
         )}

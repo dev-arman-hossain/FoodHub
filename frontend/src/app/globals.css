@@ -30,9 +30,41 @@
   * {
     border-color: var(--border);
   }
+  
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    font-weight: 900;
+  }
+
+  h1 { @apply text-4xl md:text-5xl lg:text-6xl leading-[1.1]; }
+  h2 { @apply text-3xl md:text-4xl leading-tight; }
+  h3 { @apply text-xl md:text-2xl leading-snug; }
+  
+  p, span, li, input, textarea, button {
+    @apply font-sans;
+  }
+
+  label {
+    @apply text-xs font-black uppercase tracking-widest text-zinc-500 select-none;
+  }
+
+  input, textarea {
+    @apply placeholder:text-zinc-400 font-medium;
   }
 }
 

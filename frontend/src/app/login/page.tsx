@@ -34,7 +34,7 @@ const LoginPage = () => {
                 className="w-full max-w-md bg-white rounded-[40px] shadow-2xl shadow-zinc-200/50 border border-zinc-100 p-10 md:p-14 space-y-10"
             >
                 <div className="text-center space-y-2">
-                    <h2 className="text-4xl font-display font-black text-zinc-900 tracking-tight">Welcome Back</h2>
+                    <h2 className="text-zinc-900">Welcome Back</h2>
                     <p className="text-zinc-500 font-medium">Log in to your FoodHub account</p>
                 </div>
 
@@ -47,7 +47,7 @@ const LoginPage = () => {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-1.5">
-                        <label className="text-xs font-black uppercase tracking-widest text-zinc-400 px-1">Email Address</label>
+                        <label className="px-1">Email Address</label>
                         <div className="relative">
                             <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
                             <input
@@ -63,7 +63,7 @@ const LoginPage = () => {
 
                     <div className="space-y-1.5">
                         <div className="flex items-center justify-between px-1">
-                            <label className="text-xs font-black uppercase tracking-widest text-zinc-400">Password</label>
+                            <label className="">Password</label>
                             <Link href="#" className="text-xs font-bold text-orange-500 hover:text-orange-600">Forgot?</Link>
                         </div>
                         <div className="relative">

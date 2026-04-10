@@ -48,7 +48,7 @@ const OrdersPage = () => {
     return (
         <div className="container mx-auto px-6 py-20 space-y-12">
             <div className="space-y-2">
-                <h1 className="text-5xl font-display font-black text-zinc-900 tracking-tight">Order History</h1>
+                <h1 className="text-zinc-900 tracking-tight">Order History</h1>
                 <p className="text-zinc-500 font-medium text-lg">Track your current and past culinary experiences</p>
             </div>
 
@@ -77,7 +77,7 @@ const OrdersPage = () => {
                                         )}
                                     </div>
                                     <div className="space-y-1">
-                                        <h3 className="text-2xl font-display font-black text-zinc-900">{order.provider?.businessName || 'Provider'}</h3>
+                                        <h3 className="text-zinc-900">{order.provider?.businessName || 'Provider'}</h3>
                                         <div className="flex items-center gap-4 text-sm text-zinc-400 font-medium">
                                             <span>{new Date(order.createdAt).toLocaleDateString()}</span>
                                             <span className="w-1 h-1 bg-zinc-300 rounded-full" />
@@ -113,7 +113,7 @@ const OrdersPage = () => {
                     <div className="w-20 h-20 bg-zinc-50 rounded-full flex items-center justify-center">
                         <RotateCcw className="w-8 h-8 text-zinc-300" />
                     </div>
-                    <h3 className="text-xl font-display font-bold text-zinc-900">No orders yet</h3>
+                    <h3 className="text-zinc-900">No orders yet</h3>
                     <p className="text-zinc-500 font-medium">When you place an order, it will show up here.</p>
                     <Link href="/" className="text-orange-500 font-black flex items-center gap-2 hover:gap-4 transition-all">
                         Order your first meal <ArrowRight className="w-5 h-5" />

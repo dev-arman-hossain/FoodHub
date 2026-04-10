@@ -40,7 +40,7 @@ const ProviderDashboard = () => {
         <div className="container mx-auto px-6 py-12 md:py-20 space-y-16">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
                 <div className="space-y-2">
-                    <h1 className="text-5xl font-display font-black text-zinc-900 tracking-tight">Provider Dashboard</h1>
+                    <h1 className="text-zinc-900 tracking-tight">Provider Dashboard</h1>
                     <p className="text-zinc-500 font-medium text-lg">Welcome back, <span className="text-orange-500 font-black">{user?.providerProfile?.businessName}</span></p>
                 </div>
                 <div className="flex gap-4">
@@ -76,7 +76,7 @@ const ProviderDashboard = () => {
                             </div>
                             <div>
                                 <p className="text-xs font-black uppercase tracking-widest text-zinc-400">{card.label}</p>
-                                <h3 className="text-3xl font-display font-black text-zinc-900">{card.value}</h3>
+                                <h3 className="text-zinc-900">{card.value}</h3>
                             </div>
                         </motion.div>
                     ))
@@ -87,7 +87,7 @@ const ProviderDashboard = () => {
                 {/* Recent Orders */}
                 <div className="lg:col-span-8 space-y-8">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-3xl font-display font-black text-zinc-900 tracking-tight">Recent Orders</h2>
+                        <h2 className="text-zinc-900 tracking-tight">Recent Orders</h2>
                         <Link href="/provider/orders" className="text-sm font-black text-orange-500 hover:text-orange-600 transition-soft flex items-center gap-2">
                             View All <ChevronRight className="w-4 h-4" />
                         </Link>
@@ -105,7 +105,7 @@ const ProviderDashboard = () => {
                                                 <ShoppingBag className="w-6 h-6 text-white" />
                                             </div>
                                             <div>
-                                                <h4 className="font-display font-bold text-lg text-zinc-900">Order by {order.customer?.name}</h4>
+                                                <h4 className="text-zinc-900">Order by {order.customer?.name}</h4>
                                                 <p className="text-xs text-zinc-400 font-medium">#{order.id.slice(-6).toUpperCase()} &middot; {new Date(order.createdAt).toLocaleDateString()}</p>
                                             </div>
                                         </div>
@@ -132,18 +132,18 @@ const ProviderDashboard = () => {
 
                 {/* Quick Actions */}
                 <div className="lg:col-span-4 space-y-8">
-                    <h2 className="text-3xl font-display font-black text-zinc-900 tracking-tight">Quick Actions</h2>
+                    <h2 className="text-zinc-900 tracking-tight">Quick Actions</h2>
                     <div className="grid grid-cols-1 gap-4">
                         <Link href="/provider/meals" className="p-8 bg-zinc-950 text-white rounded-[40px] flex items-center justify-between group overflow-hidden relative shadow-2xl shadow-zinc-950/20 active:scale-95 transition-soft">
                             <div className="z-10">
-                                <h3 className="text-xl font-display font-black">Manage Menu</h3>
+                                <h3 className="">Manage Menu</h3>
                                 <p className="text-zinc-400 text-sm font-medium">Update prices and availability</p>
                             </div>
                             <Package className="w-20 h-20 text-white/5 absolute -right-4 -bottom-4 group-hover:scale-110 transition-soft" />
                         </Link>
                         <Link href="/provider/orders" className="p-8 bg-white border border-zinc-100 rounded-[40px] flex items-center justify-between group overflow-hidden relative shadow-xl shadow-zinc-200/30 active:scale-95 transition-soft">
                             <div className="z-10">
-                                <h3 className="text-xl font-display font-black text-zinc-900">Manage Orders</h3>
+                                <h3 className="text-zinc-900">Manage Orders</h3>
                                 <p className="text-zinc-500 text-sm font-medium">Update order preparation status</p>
                             </div>
                             <Clock className="w-20 h-20 text-zinc-50 absolute -right-4 -bottom-4 group-hover:scale-110 transition-soft" />

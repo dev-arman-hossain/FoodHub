@@ -41,7 +41,7 @@ const RegisterPage = () => {
                 className="w-full max-w-2xl bg-white rounded-[40px] shadow-2xl shadow-zinc-200/50 border border-zinc-100 p-10 md:p-14 space-y-10"
             >
                 <div className="text-center space-y-2">
-                    <h2 className="text-4xl font-display font-black text-zinc-900 tracking-tight">Create Account</h2>
+                    <h2 className="text-zinc-900">Create Account</h2>
                     <p className="text-zinc-500 font-medium">Choose your journey and join FoodHub</p>
                 </div>
 
@@ -76,7 +76,7 @@ const RegisterPage = () => {
 
                 <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                     <div className="space-y-1.5">
-                        <label className="text-xs font-black uppercase tracking-widest text-zinc-400 px-1">Full Name</label>
+                        <label className="px-1">Full Name</label>
                         <div className="relative">
                             <UserIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
                             <input
@@ -91,7 +91,7 @@ const RegisterPage = () => {
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-xs font-black uppercase tracking-widest text-zinc-400 px-1">Email Address</label>
+                        <label className="px-1">Email Address</label>
                         <div className="relative">
                             <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
                             <input
@@ -106,7 +106,7 @@ const RegisterPage = () => {
                     </div>
 
                     <div className="space-y-1.5 md:col-span-2">
-                        <label className="text-xs font-black uppercase tracking-widest text-zinc-400 px-1">Password</label>
+                        <label className="px-1">Password</label>
                         <div className="relative">
                             <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
                             <input
@@ -123,7 +123,7 @@ const RegisterPage = () => {
                     {role === 'PROVIDER' && (
                         <>
                             <div className="space-y-1.5">
-                                <label className="text-xs font-black uppercase tracking-widest text-zinc-400 px-1">Business Name</label>
+                                <label className="px-1">Business Name</label>
                                 <div className="relative">
                                     <Store className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
                                     <input
@@ -138,7 +138,7 @@ const RegisterPage = () => {
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-xs font-black uppercase tracking-widest text-zinc-400 px-1">Business Address</label>
+                                <label className="px-1">Business Address</label>
                                 <div className="relative">
                                     <MapPin className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
                                     <input

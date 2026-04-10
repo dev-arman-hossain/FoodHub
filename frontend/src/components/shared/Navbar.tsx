@@ -25,10 +25,10 @@ const Navbar = () => {
 
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center gap-8">
-                    <Link href="/meals" className="text-sm font-medium hover:text-orange-500 transition-soft">
+                    <Link href="/meals" className="text-base font-semibold text-zinc-700 hover:text-orange-500 transition-soft">
                         Browse Meals
                     </Link>
-                    <Link href="/providers" className="text-sm font-medium hover:text-orange-500 transition-soft">
+                    <Link href="/providers" className="text-base font-semibold text-zinc-700 hover:text-orange-500 transition-soft">
                         Providers
                     </Link>
 
@@ -58,7 +58,7 @@ const Navbar = () => {
                                 <div className="w-8 h-8 rounded-full bg-zinc-200 flex items-center justify-center uppercase font-bold text-xs">
                                     {user.name.charAt(0)}
                                 </div>
-                                <span className="text-sm font-medium">{user.name.split(' ')[0]}</span>
+                                <span className="text-base font-semibold text-zinc-800">{user.name.split(' ')[0]}</span>
                             </Link>
                             <button
                                 onClick={logout}
@@ -70,12 +70,12 @@ const Navbar = () => {
                         </div>
                     ) : (
                         <div className="flex items-center gap-4">
-                            <Link href="/login" className="text-sm font-medium hover:text-orange-500 transition-soft">
+                            <Link href="/login" className="text-base font-semibold text-zinc-700 hover:text-orange-500 transition-soft">
                                 Login
                             </Link>
                             <Link
                                 href="/register"
-                                className="px-6 py-2.5 bg-orange-500 text-white rounded-full text-sm font-bold hover:bg-orange-600 transition-soft shadow-lg shadow-orange-500/20"
+                                className="px-6 py-2.5 bg-orange-500 text-white rounded-full text-base font-bold hover:bg-orange-600 transition-soft shadow-lg shadow-orange-500/20"
                             >
                                 Get Started
                             </Link>

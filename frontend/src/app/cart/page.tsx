@@ -48,7 +48,7 @@ const CartPage = () => {
                     <CheckCircle2 className="w-12 h-12 text-white" />
                 </motion.div>
                 <div className="space-y-2">
-                    <h2 className="text-4xl font-display font-black text-zinc-900">Order Placed!</h2>
+                    <h2 className="text-zinc-900">Order Placed!</h2>
                     <p className="text-zinc-500 font-medium text-lg">Your meal is being prepared by our chefs.</p>
                 </div>
                 <Link
@@ -68,7 +68,7 @@ const CartPage = () => {
                     <ShoppingBag className="w-10 h-10 text-zinc-300" />
                 </div>
                 <div className="space-y-2">
-                    <h2 className="text-3xl font-display font-bold text-zinc-900">Your cart is empty</h2>
+                    <h2 className="text-zinc-900">Your cart is empty</h2>
                     <p className="text-zinc-500 font-medium">Looks like you haven&apos;t added any delicious meals yet.</p>
                 </div>
                 <Link
@@ -87,7 +87,7 @@ const CartPage = () => {
                 {/* Cart Items */}
                 <div className="lg:col-span-7 space-y-8">
                     <div className="space-y-1">
-                        <h1 className="text-4xl font-display font-black text-zinc-900 tracking-tight">Shopping Cart</h1>
+                        <h1 className="text-zinc-900">Shopping Cart</h1>
                         <p className="text-zinc-500 font-medium">{items.length} items selected from local providers</p>
                     </div>
 
@@ -110,7 +110,7 @@ const CartPage = () => {
                                         />
                                     </div>
                                     <div className="flex-grow space-y-1">
-                                        <h3 className="font-display font-bold text-lg text-zinc-900">{item.name}</h3>
+                                        <h3 className="text-zinc-900">{item.name}</h3>
                                         <p className="text-sm text-zinc-400 font-bold uppercase tracking-tighter">{item.category?.name}</p>
                                         <div className="flex items-center gap-4 mt-2">
                                             <div className="flex items-center gap-2 p-1 bg-zinc-50 rounded-xl border border-zinc-100">
@@ -146,7 +146,7 @@ const CartPage = () => {
                 {/* Order Summary */}
                 <div className="lg:col-span-5">
                     <div className="sticky top-32 p-10 bg-zinc-900 rounded-[40px] text-white space-y-8 shadow-2xl shadow-zinc-900/20">
-                        <h2 className="text-2xl font-display font-black border-b border-white/10 pb-6">Order Summary</h2>
+                        <h2 className="border-b border-white/10 pb-6">Order Summary</h2>
 
                         <div className="space-y-6">
                             <div className="flex justify-between text-zinc-400 font-medium">
@@ -157,14 +157,14 @@ const CartPage = () => {
                                 <span>Delivery Fee</span>
                                 <span className="text-white font-bold">{formatPrice(2.5)}</span>
                             </div>
-                            <div className="flex justify-between text-xl font-display font-black pt-6 border-t border-white/10">
+                            <div className="flex justify-between text-xl font-display pt-6 border-t border-white/10">
                                 <span>Total</span>
                                 <span className="text-orange-500">{formatPrice(totalPrice + 2.5)}</span>
                             </div>
                         </div>
 
                         <div className="space-y-4 pt-4">
-                            <label className="text-xs font-black uppercase tracking-widest text-zinc-500 px-1">Delivery Address</label>
+                            <label className="px-1">Delivery Address</label>
                             <div className="relative">
                                 <MapPin className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
                                 <input

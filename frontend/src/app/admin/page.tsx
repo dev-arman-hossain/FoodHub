@@ -37,7 +37,7 @@ const AdminDashboard = () => {
     return (
         <div className="container mx-auto px-6 py-12 md:py-20 space-y-16">
             <div className="space-y-2">
-                <h1 className="text-5xl font-display font-black text-zinc-900 tracking-tight">Admin Console</h1>
+                <h1 className="text-zinc-900 tracking-tight">Admin Console</h1>
                 <p className="text-zinc-500 font-medium text-lg">Platform-wide overview and mission control</p>
             </div>
 
@@ -64,7 +64,7 @@ const AdminDashboard = () => {
                             </div>
                             <div className="mt-6 space-y-1">
                                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">{card.label}</p>
-                                <h3 className="text-3xl font-display font-black text-zinc-900">{card.value}</h3>
+                                <h3 className="text-zinc-900">{card.value}</h3>
                             </div>
                         </motion.div>
                     ))
@@ -76,21 +76,21 @@ const AdminDashboard = () => {
                     <div className="p-4 bg-white/10 rounded-2xl w-fit group-hover:bg-orange-500 transition-soft">
                         <UserCog className="w-6 h-6" />
                     </div>
-                    <h3 className="text-2xl font-display font-black">User Management</h3>
+                    <h3 className="">User Management</h3>
                     <p className="text-zinc-400 text-sm font-medium">Suspend or activate accounts across the platform</p>
                 </Link>
                 <Link href="/admin/categories" className="p-8 bg-white border border-zinc-100 rounded-[40px] space-y-4 hover:scale-[1.02] transition-soft shadow-xl shadow-zinc-200/30 active:scale-95 group">
                     <div className="p-4 bg-zinc-50 rounded-2xl w-fit group-hover:bg-orange-500 group-hover:text-white transition-soft">
                         <LayoutGrid className="w-6 h-6" />
                     </div>
-                    <h3 className="text-2xl font-display font-black text-zinc-900">Categories</h3>
+                    <h3 className="text-zinc-900">Categories</h3>
                     <p className="text-zinc-500 text-sm font-medium">Manage the global taxonomy of available meals</p>
                 </Link>
                 <Link href="/admin/orders" className="p-8 bg-white border border-zinc-100 rounded-[40px] space-y-4 hover:scale-[1.02] transition-soft shadow-xl shadow-zinc-200/30 active:scale-95 group">
                     <div className="p-4 bg-zinc-50 rounded-2xl w-fit group-hover:bg-orange-500 group-hover:text-white transition-soft">
                         <Activity className="w-6 h-6" />
                     </div>
-                    <h3 className="text-2xl font-display font-black text-zinc-900">All Orders</h3>
+                    <h3 className="text-zinc-900">All Orders</h3>
                     <p className="text-zinc-500 text-sm font-medium">Monitor and audit every transaction on FoodHub</p>
                 </Link>
             </div>

@@ -71,7 +71,7 @@ const OrderDetailsPage = () => {
 
             <div className="space-y-4">
                 <div className="flex items-center gap-4 flex-wrap">
-                    <h1 className="text-5xl font-display font-black text-zinc-900 tracking-tight">
+                    <h1 className="text-zinc-900 tracking-tight">
                         Order #{order.id.slice(-6).toUpperCase()}
                     </h1>
                     <div className="flex items-center gap-2 bg-orange-50 text-orange-600 px-4 py-1.5 rounded-full border border-orange-100 shadow-sm">
@@ -119,7 +119,7 @@ const OrderDetailsPage = () => {
                 <div className="lg:col-span-8 space-y-8">
                     <div className="bg-white rounded-[40px] border border-zinc-100 overflow-hidden shadow-xl shadow-zinc-200/30">
                         <div className="bg-zinc-950 p-8 text-white">
-                            <h3 className="text-xl font-display font-black tracking-tight">Ordered Items</h3>
+                            <h3 className="text-xl">Ordered Items</h3>
                         </div>
                         <div className="divide-y divide-zinc-50">
                             {order.items.map((item) => (
@@ -188,7 +188,7 @@ const OrderDetailsPage = () => {
                                     {order.provider?.logoUrl ? <img src={order.provider.logoUrl} alt="" className="w-full h-full object-contain" /> : <Package className="w-5 h-5 text-white" />}
                                 </div>
                                 <div className="space-y-0.5">
-                                    <h4 className="font-display font-bold text-zinc-900 leading-none">{order.provider?.businessName}</h4>
+                                    <h4 className="text-zinc-900">{order.provider?.businessName}</h4>
                                     <p className="text-xs text-zinc-400 font-bold uppercase tracking-widest">Verified Provider</p>
                                 </div>
                             </div>

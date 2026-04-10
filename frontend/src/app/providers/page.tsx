@@ -49,7 +49,7 @@ const ProvidersPage = () => {
                         className="space-y-2"
                     >
                         <span className="text-orange-500 font-bold uppercase tracking-[0.3em] text-sm">Local Partners</span>
-                        <h1 className="text-6xl md:text-7xl font-display font-black text-white tracking-tight">
+                        <h1 className="text-white tracking-tight">
                             Meet Our <span className="heading-gradient italic">Providers.</span>
                         </h1>
                         <p className="text-zinc-400 font-medium text-xl max-w-2xl mx-auto leading-relaxed">
@@ -116,7 +116,7 @@ const ProvidersPage = () => {
                             <Store className="w-10 h-10 text-zinc-200" />
                         </div>
                         <div className="space-y-2">
-                            <h3 className="text-3xl font-display font-black text-zinc-900">No providers found</h3>
+                            <h3 className="text-zinc-900">No providers found</h3>
                             <p className="text-zinc-500 font-medium max-w-md mx-auto">
                                 We couldn't find any food providers matching "{search}".
                                 Please try another search term or browse our main menu.

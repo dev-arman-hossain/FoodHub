@@ -131,7 +131,7 @@ const MealsContent = () => {
                 <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 pt-8 pb-12">
                     <div className="space-y-3">
                         <span className="text-orange-500 font-bold uppercase tracking-[0.3em] text-[10px]">Exquisite Selection</span>
-                        <h1 className="text-6xl font-display font-black text-zinc-900 tracking-tighter leading-none">Browse Our <span className="text-orange-500">Menu</span></h1>
+                        <h1 className="text-zinc-900">Browse Our <span className="text-orange-500">Menu</span></h1>
                         <p className="text-zinc-500 font-medium text-lg max-w-xl">
                             Taste the excellence of local culinary masters.
                         </p>
@@ -250,7 +250,7 @@ const MealsContent = () => {
                                     <Utensils className="w-16 h-16 text-zinc-200" />
                                 </div>
                                 <div className="space-y-3">
-                                    <h3 className="text-4xl font-display font-black text-zinc-900 tracking-tight">No flavors found</h3>
+                                    <h3 className="text-zinc-900">No flavors found</h3>
                                     <p className="text-zinc-500 font-medium text-lg max-w-sm">
                                         We couldn't find any masterpieces matching your current palette.
                                     </p>
@@ -293,7 +293,7 @@ const MealsContent = () => {
                             className="fixed right-0 top-0 bottom-0 w-full max-w-xs bg-white z-[101] shadow-2xl p-6 overflow-y-auto no-scrollbar"
                         >
                             <div className="flex items-center justify-between mb-8">
-                                <h3 className="text-2xl font-display font-black">Filters</h3>
+                                <h3 className="">Filters</h3>
                                 <button onClick={() => setIsMobileFilterOpen(false)} className="p-2 bg-zinc-50 rounded-xl">
                                     <X className="w-6 h-6" />
                                 </button>
