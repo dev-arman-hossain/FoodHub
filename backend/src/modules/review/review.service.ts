@@ -39,9 +39,30 @@ const addReview = async (
         throw new AppError(status.CONFLICT as number, 'You have already reviewed this meal.');
     }
 
-    return prisma.review.create({
-        data: { customerId, mealId, orderId, rating, comment: comment || null },
-        include: { customer: { select: { name: true } } },
+    return prisma.$transaction(async (tx) => {
+        // Create review
+        const review = await tx.review.create({
+            data: { customerId, mealId, orderId, rating, comment: comment || null },
+            include: { customer: { select: { name: true } } },
+        });
+
+        // Recalculate meal stats
+        const aggregates = await tx.review.aggregate({
+            where: { mealId },
+            _avg: { rating: true },
+            _count: { id: true },
+        });
+
+        // Update meal
+        await tx.meal.update({
+            where: { id: mealId },
+            data: {
+                avgRating: aggregates._avg.rating || 0,
+                reviewCount: aggregates._count.id,
+            },
+        });
+
+        return review;
     });
 };
 

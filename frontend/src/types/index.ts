@@ -53,6 +53,7 @@ export interface Order {
     items: OrderItem[];
     provider?: { businessName: string; logoUrl?: string };
     customer?: { name: string; email: string };
+    reviews?: Partial<Review>[];
 }
 
 export interface OrderItem {

@@ -8,12 +8,17 @@ import { Package, MapPin, Calendar, CreditCard, ChevronLeft, CheckCircle2, Truck
 import { formatPrice, cn } from '@/lib/utils';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import ReviewModal from '@/components/orders/ReviewModal';
 
 const OrderDetailsPage = () => {
     const { id } = useParams();
     const [order, setOrder] = useState<Order | null>(null);
     const [loading, setLoading] = useState(true);
     const [mounted, setMounted] = useState(false);
+    
+    // Review Modal State
+    const [isReviewOpen, setIsReviewOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<{ id: string, name: string } | null>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -128,8 +133,28 @@ const OrderDetailsPage = () => {
                                             <p className="text-sm text-zinc-500 font-medium">Qty: {item.quantity} &times; {formatPrice(item.price)}</p>
                                         </div>
                                     </div>
-                                    <div className="text-xl font-display font-black text-zinc-900">
-                                        {formatPrice(item.price * item.quantity)}
+                                    <div className="flex flex-col items-end gap-2">
+                                        <div className="text-xl font-display font-black text-zinc-900">
+                                            {formatPrice(item.price * item.quantity)}
+                                        </div>
+                                        {order.status === 'DELIVERED' && (
+                                            order.reviews?.some(r => r.mealId === item.mealId) ? (
+                                                <div className="flex items-center gap-2 text-green-600 bg-green-50 px-4 py-1.5 rounded-full border border-green-100">
+                                                    <CheckCircle2 className="w-3.5 h-3.5" />
+                                                    <span className="text-[10px] font-black uppercase tracking-widest">Reviewed</span>
+                                                </div>
+                                            ) : (
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedItem({ id: item.mealId, name: item.mealName });
+                                                        setIsReviewOpen(true);
+                                                    }}
+                                                    className="px-4 py-1.5 bg-orange-50 text-orange-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-orange-100 hover:bg-orange-500 hover:text-white transition-soft"
+                                                >
+                                                    Write Review
+                                                </button>
+                                            )
+                                        )}
                                     </div>
                                 </div>
                             ))}
@@ -171,6 +196,21 @@ const OrderDetailsPage = () => {
                     </div>
                 </div>
             </div>
+
+            {selectedItem && (
+                <ReviewModal
+                    isOpen={isReviewOpen}
+                    onClose={() => setIsReviewOpen(false)}
+                    mealId={selectedItem.id}
+                    mealName={selectedItem.name}
+                    orderId={order.id}
+                    onSuccess={() => {
+                        // Optionally show a global toast here if available
+                        // The service already handles polling/refresh if we fetchOrder
+                        console.log('Review submitted successfully');
+                    }}
+                />
+            )}
         </div>
     );
 };

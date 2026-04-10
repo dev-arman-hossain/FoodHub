@@ -4,7 +4,7 @@ import { ReviewController } from './review.controller';
 
 const router = Router({ mergeParams: true }); // mergeParams for /meals/:mealId/reviews
 
-router.post('/', checkAuth('CUSTOMER'), ReviewController.addReview);
-router.get('/', ReviewController.getMealReviews);
+router.post('/:mealId', checkAuth('CUSTOMER'), ReviewController.addReview);
+router.get('/:mealId', ReviewController.getMealReviews);
 
 export const ReviewRoutes = router;
