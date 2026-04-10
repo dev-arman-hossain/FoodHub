@@ -5,14 +5,17 @@ import { sendResponse } from '../../utils/sendResponse';
 import { MealService } from './meal.service';
 
 const getAllMeals = catchAsync(async (req: Request, res: Response) => {
-    const { categoryId, minPrice, maxPrice, search, page, limit } = req.query;
+    const { categoryId, minPrice, maxPrice, search, sortBy, minRating, isAvailable, page, limit } = req.query;
     const result = await MealService.getAllMeals({
-        categoryId: categoryId as string,
+        categoryId: categoryId as string | string[],
         minPrice: minPrice ? Number(minPrice) : undefined,
         maxPrice: maxPrice ? Number(maxPrice) : undefined,
         search: search as string,
+        sortBy: sortBy as any,
+        minRating: minRating ? Number(minRating) : undefined,
+        isAvailable: isAvailable === 'true' ? true : isAvailable === 'false' ? false : undefined,
         page: page ? Number(page) : 1,
-        limit: limit ? Number(limit) : 12,
+        limit: limit ? Number(limit) : 8,
     });
     res.setHeader('Cache-Control', 'public, max-age=60');
     sendResponse(res, {

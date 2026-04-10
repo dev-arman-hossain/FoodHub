@@ -8,33 +8,67 @@ import { promisify } from 'util';
 const unlinkAsync = promisify(fs.unlink);
 
 interface IMealFilters {
-    categoryId?: string;
+    categoryId?: string | string[];
     minPrice?: number;
     maxPrice?: number;
     search?: string;
+    sortBy?: 'price-asc' | 'price-desc' | 'rating-desc' | 'newest';
+    minRating?: number;
+    isAvailable?: boolean;
     page?: number;
     limit?: number;
 }
 
 const getAllMeals = async (filters: IMealFilters) => {
-    const { categoryId, minPrice, maxPrice, search, page = 1, limit = 12 } = filters;
+    const { categoryId, minPrice, maxPrice, search, sortBy, minRating, isAvailable, page = 1, limit = 8 } = filters;
     const skip = (page - 1) * limit;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const where: any = { isAvailable: true };
+    const where: any = {};
+    
+    // Default to true unless explicitly specified (though public browse usually only shows available)
+    if (isAvailable !== undefined) {
+        where.isAvailable = isAvailable;
+    } else {
+        where.isAvailable = true;
+    }
 
-    if (categoryId) where.categoryId = categoryId;
+    if (categoryId) {
+        if (Array.isArray(categoryId)) {
+            where.categoryId = { in: categoryId };
+        } else {
+            // Support comma separated string from query params
+            const catIds = categoryId.split(',').filter(Boolean);
+            if (catIds.length > 1) {
+                where.categoryId = { in: catIds };
+            } else {
+                where.categoryId = categoryId;
+            }
+        }
+    }
+
     if (minPrice !== undefined || maxPrice !== undefined) {
         where.price = {};
         if (minPrice !== undefined) where.price.gte = minPrice;
         if (maxPrice !== undefined) where.price.lte = maxPrice;
     }
+
+    if (minRating !== undefined) {
+        where.avgRating = { gte: minRating };
+    }
+
     if (search) {
         where.OR = [
             { name: { contains: search, mode: 'insensitive' } },
             { description: { contains: search, mode: 'insensitive' } },
         ];
     }
+
+    // Determine Sorting
+    let orderBy: any = { createdAt: 'desc' };
+    if (sortBy === 'price-asc') orderBy = { price: 'asc' };
+    if (sortBy === 'price-desc') orderBy = { price: 'desc' };
+    if (sortBy === 'rating-desc') orderBy = { avgRating: 'desc' };
+    if (sortBy === 'newest') orderBy = { createdAt: 'desc' };
 
     const [meals, total] = await Promise.all([
         prisma.meal.findMany({
@@ -44,22 +78,14 @@ const getAllMeals = async (filters: IMealFilters) => {
             include: {
                 category: true,
                 provider: { select: { businessName: true, address: true } },
-                reviews: { select: { rating: true } },
             },
-            orderBy: { createdAt: 'desc' },
+            orderBy,
         }),
         prisma.meal.count({ where }),
     ]);
 
-    const mealsWithRating = meals.map((meal) => {
-        const avgRating = meal.reviews.length
-            ? meal.reviews.reduce((sum, r) => sum + r.rating, 0) / meal.reviews.length
-            : null;
-        return { ...meal, avgRating, reviewCount: meal.reviews.length };
-    });
-
     return {
-        meals: mealsWithRating,
+        meals, // Already has avgRating and reviewCount from the database
         meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
     };
 };
