@@ -130,8 +130,8 @@ const MealDetailsPage = () => {
 
     if (!meal) return (
         <div className="container mx-auto px-6 py-40 text-center">
-            <h2 className="text-4xl font-display font-black text-zinc-900 mb-4">Oops!</h2>
-            <p className="text-zinc-500 mb-8">This delicious meal seems to have escaped our kitchen.</p>
+            <h2 className="text-3xl font-display font-black text-zinc-900 mb-4">Oops!</h2>
+            <p className="text-lg text-zinc-500 mb-8">This delicious meal seems to have escaped our kitchen.</p>
             <Link href="/" className="px-10 py-4 bg-orange-500 text-white rounded-2xl font-black transition-soft">
                 Back to Browse
             </Link>
@@ -238,17 +238,17 @@ const MealDetailsPage = () => {
                                 )}
                             </div>
 
-                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-display font-bold text-zinc-900 tracking-tight leading-[1.1] lg:leading-[0.95]">
+                            <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-zinc-900 mb-2">
                                 {meal.name}
                             </h1>
 
-                            <p className="text-xl text-zinc-500 font-medium leading-relaxed max-w-2xl">
+                            <p className="text-lg text-zinc-500 font-medium leading-relaxed max-w-2xl">
                                 {meal.description || 'Experience culinary perfection with this masterfully prepared dish, featuring sustainable local ingredients and a secret blend of heritage spices.'}
                             </p>
                         </div>
 
                         <div className="flex items-end gap-3 pb-4">
-                            <span className="text-5xl lg:text-7xl font-display font-bold text-zinc-900 tracking-tighter">
+                            <span className="text-3xl md:text-4xl font-display font-black text-zinc-900">
                                 {formatPrice(Number(meal.price))}
                             </span>
                             <span className="text-zinc-400 font-bold mb-2 lg:mb-4">/ meal</span>
@@ -337,7 +337,7 @@ const MealDetailsPage = () => {
                             </div>
                             <div className="flex-grow">
                                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-500 mb-1">Expertly Crafted By</p>
-                                <h3 className="font-display font-black text-2xl text-zinc-900 group-hover:text-orange-600 transition-soft">{meal.provider?.businessName || 'Elite Chef'}</h3>
+                                <h3 className="text-xl font-display font-bold text-zinc-900 group-hover:text-orange-600 transition-soft">{meal.provider?.businessName || 'Elite Chef'}</h3>
                                 <div className="flex items-center gap-2 mt-1">
                                     <div className="flex items-center gap-1 text-orange-500 font-bold text-xs">
                                         <Star className="w-3 h-3 fill-current" /> 4.9
@@ -359,13 +359,13 @@ const MealDetailsPage = () => {
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
                         <div className="space-y-4">
                             <span className="px-5 py-2 bg-white text-zinc-900 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-sm border border-zinc-100">Feedback</span>
-                            <h2 className="text-5xl font-display font-black text-zinc-900 tracking-tight">Gastronomic Reviews</h2>
+                            <h2 className="text-3xl md:text-4xl font-display font-black text-zinc-900 mb-2">Gastronomic Reviews</h2>
                             <p className="text-zinc-500 font-medium text-lg max-w-xl">Join the conversation and discover why foodies rave about this masterwork.</p>
                         </div>
                         
                         <div className="flex items-center gap-10">
                             <div className="text-center">
-                                <p className="text-5xl font-display font-black text-zinc-900">{meal.avgRating?.toFixed(1) || '0.0'}</p>
+                                <p className="text-3xl md:text-4xl font-display font-black text-zinc-900">{meal.avgRating?.toFixed(1) || '0.0'}</p>
                                 <div className="flex justify-center gap-1 my-2">
                                     {[...Array(5)].map((_, i) => (
                                         <Star key={i} className={cn("w-4 h-4", i < Math.round(Number(meal.avgRating)) ? "text-orange-500 fill-orange-500" : "text-zinc-200")} />
@@ -402,7 +402,7 @@ const MealDetailsPage = () => {
                                         <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto shadow-2xl shadow-green-500/20">
                                             <CheckCircle2 className="w-12 h-12 text-white" />
                                         </div>
-                                        <h3 className="text-4xl font-display font-black text-zinc-900">Appreciation Received!</h3>
+                                        <h3 className="text-2xl font-display font-black text-zinc-900 mb-2">Appreciation Received!</h3>
                                         <p className="text-zinc-500 text-xl font-medium max-w-md mx-auto leading-relaxed">Your feedback has been successfully shared with the chef and the community.</p>
                                         <button 
                                             onClick={() => { setShowReviewForm(false); setReviewSuccess(false); }} 
@@ -414,7 +414,7 @@ const MealDetailsPage = () => {
                                 ) : (
                                     <form onSubmit={handleReviewSubmit} className="space-y-12">
                                         <div className="space-y-3">
-                                            <h3 className="text-3xl font-display font-black text-zinc-900">How was your meal?</h3>
+                                            <h3 className="text-2xl font-display font-black text-zinc-900">How was your meal?</h3>
                                             <p className="text-zinc-500 font-medium">Your authentic review helps others discover great food.</p>
                                         </div>
 
@@ -495,7 +495,7 @@ const MealDetailsPage = () => {
                                                     )}
                                                 </div>
                                                 <div>
-                                                    <h4 className="font-display font-black text-xl text-zinc-900 leading-none">{rev.customer?.name}</h4>
+                                                    <h4 className="text-lg font-display font-bold text-zinc-900 leading-none">{rev.customer?.name}</h4>
                                                     <p className="text-[10px] text-zinc-400 uppercase font-black tracking-widest mt-2 flex items-center gap-1.5">
                                                         <CheckCircle2 className="w-3 h-3 text-green-500" /> Verified Connoisseur
                                                     </p>
@@ -548,7 +548,7 @@ const MealDetailsPage = () => {
                         <div className="flex items-end justify-between">
                             <div className="space-y-4">
                                 <span className="px-5 py-2 bg-orange-50 text-orange-600 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border border-orange-100">Pairing Suggestions</span>
-                                <h2 className="text-5xl font-display font-black text-zinc-900 tracking-tight">More from {meal.category?.name}</h2>
+                                <h2 className="text-3xl md:text-4xl font-display font-black text-zinc-900 mb-2">More from {meal.category?.name}</h2>
                                 <p className="text-zinc-500 font-medium text-lg">Delicious companions and alternative flavors just for you.</p>
                             </div>
                             <Link href="/meals" className="hidden sm:flex items-center gap-2 text-zinc-900 font-black group">

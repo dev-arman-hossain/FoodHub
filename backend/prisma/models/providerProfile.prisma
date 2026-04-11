@@ -1,0 +1,13 @@
+model ProviderProfile {
+  id           String  @id @default(uuid())
+  userId       String  @unique
+  businessName String
+  description  String?
+  logoUrl      String?
+  address      String?
+  meals        Meal[]
+  Order        Order[]
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("provider_profiles")
+}
