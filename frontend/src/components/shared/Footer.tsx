@@ -16,13 +16,13 @@ const Footer = () => {
                         Delivering happiness to your doorstep, one meal at a time. The most premium food delivery platform.
                     </p>
                     <div className="flex items-center gap-4">
-                        <a href="#" className="p-2 bg-white/5 hover:bg-orange-500 rounded-full transition-soft group">
+                        <a href="https://facebook.com/foodhub" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 hover:bg-orange-500 rounded-full transition-soft group">
                             <Facebook className="w-4 h-4 group-hover:scale-110" />
                         </a>
-                        <a href="#" className="p-2 bg-white/5 hover:bg-orange-500 rounded-full transition-soft group">
+                        <a href="https://twitter.com/foodhub" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 hover:bg-orange-500 rounded-full transition-soft group">
                             <Twitter className="w-4 h-4 group-hover:scale-110" />
                         </a>
-                        <a href="#" className="p-2 bg-white/5 hover:bg-orange-500 rounded-full transition-soft group">
+                        <a href="https://instagram.com/foodhub" target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 hover:bg-orange-500 rounded-full transition-soft group">
                             <Instagram className="w-4 h-4 group-hover:scale-110" />
                         </a>
                     </div>
@@ -50,18 +50,24 @@ const Footer = () => {
 
                 <div className="space-y-6">
                     <h4 className="font-display font-bold text-lg uppercase tracking-wider text-orange-500">Contact Us</h4>
-                    <ul className="space-y-4 text-sm text-zinc-400 font-medium">
-                        <li className="flex items-center gap-3">
-                            <MapPin className="w-4 h-4 text-orange-500" />
-                            <span>123 Foodie Ave, Gourmet City</span>
+                    <ul className="space-y-4 text-sm text-zinc-400 font-medium flex flex-col items-start gap-4">
+                        <li>
+                            <a href="https://maps.google.com/?q=123+Foodie+Ave,+Gourmet+City" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-white transition-soft">
+                                <MapPin className="w-4 h-4 text-orange-500" />
+                                <span>123 Foodie Ave, Gourmet City</span>
+                            </a>
                         </li>
-                        <li className="flex items-center gap-3">
-                            <Phone className="w-4 h-4 text-orange-500" />
-                            <span>+1 (555) 123-4567</span>
+                        <li>
+                            <a href="tel:+15551234567" className="flex items-center gap-3 hover:text-white transition-soft">
+                                <Phone className="w-4 h-4 text-orange-500" />
+                                <span>+1 (555) 123-4567</span>
+                            </a>
                         </li>
-                        <li className="flex items-center gap-3">
-                            <Mail className="w-4 h-4 text-orange-500" />
-                            <span>support@foodhub.com</span>
+                        <li>
+                            <a href="mailto:support@foodhub.com" className="flex items-center gap-3 hover:text-white transition-soft">
+                                <Mail className="w-4 h-4 text-orange-500" />
+                                <span>support@foodhub.com</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
