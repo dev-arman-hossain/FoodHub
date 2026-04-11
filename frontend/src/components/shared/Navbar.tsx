@@ -8,7 +8,7 @@ import { useCart } from '@/context/CartContext';
 import {
     ShoppingCart, LogOut, Menu, UtensilsCrossed, X,
     ChevronRight, Home, LayoutGrid, Users, Info,
-    BookOpen, Phone, User, ArrowUpRight, Sparkles
+    BookOpen, Phone, User, ArrowUpRight, Sparkles, ShoppingBag
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -358,27 +358,68 @@ const Navbar = () => {
                         <div className="w-px h-5 bg-zinc-200 mx-1" />
 
                         {user ? (
-                            <div className="flex items-center gap-1">
-                                <Link
-                                    href={
-                                        user.role === 'ADMIN' ? '/admin'
-                                            : user.role === 'PROVIDER' ? '/provider/dashboard'
-                                                : '/orders'
-                                    }
-                                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-zinc-50 transition-colors"
+                            <div className="relative group">
+                                <button
+                                    className="flex items-center gap-2.5 px-3 py-2 rounded-2xl hover:bg-zinc-50 transition-all duration-300"
                                 >
-                                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-black text-xs shadow">
+                                    <div className="w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-black text-xs shadow-lg shadow-orange-500/10 border-2 border-white">
                                         {user.name.charAt(0).toUpperCase()}
                                     </div>
-                                    <span className="text-sm font-semibold text-zinc-800">{user.name.split(' ')[0]}</span>
-                                </Link>
-                                <button
-                                    onClick={logout}
-                                    title="Logout"
-                                    className="p-2 rounded-xl text-zinc-400 hover:text-red-500 hover:bg-red-50 transition-colors"
-                                >
-                                    <LogOut className="w-4 h-4" />
+                                    <div className="hidden xl:block text-left mr-1">
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-orange-500 leading-none mb-1">Welcome back</p>
+                                        <p className="text-sm font-bold text-zinc-900 leading-none">{user.name.split(' ')[0]}</p>
+                                    </div>
+                                    <ChevronRight className="w-4 h-4 text-zinc-300 group-hover:rotate-90 group-hover:text-orange-500 transition-all duration-300" />
                                 </button>
+
+                                {/* Profile Dropdown */}
+                                <div className="absolute top-full right-0 mt-2 w-64 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 z-50">
+                                    <div className="bg-white border border-zinc-100 rounded-[32px] shadow-2xl shadow-zinc-200/50 p-3 mt-4 overflow-hidden">
+                                        <div className="px-5 py-4 border-b border-zinc-50 flex items-center gap-4">
+                                            <div className="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-white font-black">
+                                                {user.name.charAt(0).toUpperCase()}
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className="font-bold text-zinc-900 truncate">{user.name}</p>
+                                                <p className="text-xs text-zinc-400 font-medium capitalize truncate">{user.role.toLowerCase()}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="p-1 space-y-1">
+                                            <Link 
+                                                href={user.role === 'ADMIN' ? '/admin' : user.role === 'PROVIDER' ? '/provider/dashboard' : '/dashboard'}
+                                                className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-2xl transition-colors group/item"
+                                            >
+                                                <LayoutGrid className="w-4 h-4 text-zinc-400 group-hover/item:text-orange-500 transition-colors" />
+                                                Dashboard
+                                            </Link>
+                                            <Link 
+                                                href="/profile"
+                                                className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-2xl transition-colors group/item"
+                                            >
+                                                <User className="w-4 h-4 text-zinc-400 group-hover/item:text-orange-500 transition-colors" />
+                                                My Profile
+                                            </Link>
+                                            <Link 
+                                                href="/orders"
+                                                className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-2xl transition-colors group/item"
+                                            >
+                                                <ShoppingBag className="w-4 h-4 text-zinc-400 group-hover/item:text-orange-500 transition-colors" />
+                                                {user.role === 'PROVIDER' ? 'Order Feed' : 'My Orders'}
+                                            </Link>
+                                        </div>
+
+                                        <div className="mt-1 pt-1 border-t border-zinc-50 p-1">
+                                            <button
+                                                onClick={logout}
+                                                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-50 rounded-2xl transition-colors group/logout"
+                                            >
+                                                <LogOut className="w-4 h-4 group-hover/logout:-translate-x-1 transition-transform" />
+                                                Sign Out
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         ) : (
                             <div className="flex items-center gap-2">

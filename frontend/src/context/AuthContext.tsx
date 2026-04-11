@@ -60,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         if (res.data.data.user.role === 'ADMIN') router.push('/admin');
         else if (res.data.data.user.role === 'PROVIDER') router.push('/provider/dashboard');
-        else router.push('/');
+        else router.push('/dashboard');
     };
 
     const googleLogin = async (idToken: string) => {
@@ -72,7 +72,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         if (res.data.data.user.role === 'ADMIN') router.push('/admin');
         else if (res.data.data.user.role === 'PROVIDER') router.push('/provider/dashboard');
-        else router.push('/');
+        else router.push('/dashboard');
     };
 
     const register = async (data: any) => {
@@ -83,7 +83,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
         
         if (res.data.data.user.role === 'PROVIDER') router.push('/provider/dashboard');
-        else router.push('/');
+        else if (res.data.data.user.role === 'ADMIN') router.push('/admin');
+        else router.push('/dashboard');
     };
 
     const logout = async () => {

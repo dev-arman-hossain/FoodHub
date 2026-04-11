@@ -7,6 +7,7 @@ const router = Router();
 // Customer routes
 router.post('/', checkAuth('CUSTOMER'), OrderController.createOrder);
 router.get('/', checkAuth('CUSTOMER'), OrderController.getMyOrders);
+router.get('/customer-stats', checkAuth('CUSTOMER'), OrderController.getCustomerStats);
 router.get('/:id', checkAuth('CUSTOMER'), OrderController.getOrderById);
 router.patch('/:id/cancel', checkAuth('CUSTOMER'), OrderController.cancelOrder);
 

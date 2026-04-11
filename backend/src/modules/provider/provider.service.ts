@@ -17,26 +17,72 @@ const getDashboardStats = async (userId: string) => {
         throw new AppError(status.NOT_FOUND as number, 'Provider profile not found.');
     }
 
-    const [totalMeals, totalOrders, totalEarnings] = await Promise.all([
+    const today = new Date();
+    const fourWeeksAgo = new Date();
+    fourWeeksAgo.setDate(today.getDate() - 27);
+    fourWeeksAgo.setHours(0, 0, 0, 0);
+
+    const [
+        totalMeals,
+        totalOrders,
+        earningsData,
+        pendingOrders,
+        recentOrders,
+        statusDistribution,
+        weeklyTrends,
+    ] = await Promise.all([
         prisma.meal.count({ where: { providerId: profile.id } }),
         prisma.order.count({ where: { providerId: profile.id } }),
         prisma.order.aggregate({
             where: { providerId: profile.id, status: 'DELIVERED' },
             _sum: { totalAmount: true },
         }),
+        prisma.order.count({
+            where: { 
+                providerId: profile.id, 
+                status: { in: ['PLACED', 'PREPARING', 'READY'] } 
+            },
+        }),
+        prisma.order.findMany({
+            where: { providerId: profile.id },
+            take: 5,
+            orderBy: { createdAt: 'desc' },
+            include: { customer: { select: { name: true } } },
+        }),
+        prisma.order.groupBy({
+            by: ['status'],
+            where: { providerId: profile.id },
+            _count: { id: true },
+        }),
+        // Weekly trends for last 4 weeks (grouped by week start)
+        prisma.$queryRawUnsafe<any[]>(`
+            SELECT 
+                TO_CHAR(DATE_TRUNC('week', "createdAt"), 'DD Mon') as week,
+                COUNT(id)::int as count,
+                SUM("totalAmount")::float as revenue
+            FROM orders
+            WHERE "providerId" = $1 AND "createdAt" >= $2
+            GROUP BY DATE_TRUNC('week', "createdAt")
+            ORDER BY DATE_TRUNC('week', "createdAt") ASC
+        `, profile.id, fourWeeksAgo),
     ]);
 
-    const recentOrders = await prisma.order.findMany({
-        where: { providerId: profile.id },
-        take: 5,
-        orderBy: { createdAt: 'desc' },
-        include: { customer: { select: { name: true } } },
-    });
-
     return {
-        totalMeals,
-        totalOrders,
-        totalEarnings: totalEarnings._sum.totalAmount || 0,
+        totals: {
+            totalMeals,
+            totalOrders,
+            totalEarnings: Number(earningsData._sum.totalAmount || 0),
+            pendingOrders,
+        },
+        trends: weeklyTrends.map(t => ({
+            name: t.week,
+            orders: t.count,
+            revenue: t.revenue,
+        })),
+        statusDistribution: statusDistribution.map(s => ({
+            name: s.status,
+            value: s._count.id,
+        })),
         recentOrders,
     };
 };

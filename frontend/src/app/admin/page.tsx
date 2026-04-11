@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '@/context/AuthContext';
 import api from '@/lib/axios';
-import { Users, ShoppingBag, DollarSign, Activity, ChevronRight, LayoutGrid, ShieldCheck, UserCog } from 'lucide-react';
-import { formatPrice, cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { StatSkeleton } from '@/components/shared/StatSkeleton';
+import { 
+    Users, ShoppingBag, DollarSign, Package, AlertCircle, 
+    Activity, ArrowRight, Utensils
+} from 'lucide-react';
+import StatsCard from '@/components/dashboard/StatsCard';
+import { OrdersBarChart, RevenueLineChart, StatusPieChart } from '@/components/dashboard/DashboardCharts';
+import RecentOrdersTable from '@/components/dashboard/RecentOrdersTable';
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState<any>(null);
@@ -19,7 +21,7 @@ const AdminDashboard = () => {
                 const res = await api.get('/admin/stats');
                 setStats(res.data.data);
             } catch (err) {
-                console.error(err);
+                console.error('Failed to fetch admin stats:', err);
             } finally {
                 setLoading(false);
             }
@@ -27,74 +29,86 @@ const AdminDashboard = () => {
         fetchStats();
     }, []);
 
-    const cards = [
-        { label: 'Total Customers', value: stats?.totalUsers || 0, icon: <Users />, color: 'blue' },
-        { label: 'Total Providers', value: stats?.totalProviders || 0, icon: <ShieldCheck />, color: 'orange' },
-        { label: 'Total Orders', value: stats?.totalOrders || 0, icon: <ShoppingBag />, color: 'purple' },
-        { label: 'Platform Revenue', value: formatPrice(stats?.totalRevenue || 0), icon: <DollarSign />, color: 'green' },
-    ];
+    if (loading) return (
+        <DashboardLayout>
+            <div className="p-8 space-y-8 animate-pulse">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {[1, 2, 3, 4].map(i => <div key={i} className="h-40 bg-zinc-100 rounded-[32px]" />)}
+                </div>
+                <div className="h-[500px] bg-zinc-50 rounded-[40px]" />
+            </div>
+        </DashboardLayout>
+    );
+
+    if (!stats) return (
+        <DashboardLayout>
+            <div className="p-20 text-center">Failed to load system data.</div>
+        </DashboardLayout>
+    );
+
+    const { totals, trends, recentOrders, statusDistribution } = stats;
 
     return (
-        <div className="container mx-auto px-6 py-12 md:py-20 space-y-16">
-            <div className="space-y-2">
-                <h1 className="text-zinc-900 tracking-tight">Admin Console</h1>
-                <p className="text-zinc-500 font-medium text-lg">Platform-wide overview and mission control</p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                {loading ? (
-                    [...Array(4)].map((_, i) => <StatSkeleton key={i} />)
-                ) : (
-                    cards.map((card, idx) => (
-                        <motion.div
-                            key={card.label}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: idx * 0.1 }}
-                            className="p-10 bg-white rounded-[40px] border border-zinc-100 shadow-xl shadow-zinc-200/20 group hover:border-orange-500 transition-soft"
-                        >
-                            <div className={cn(
-                                "w-14 h-14 rounded-2xl flex items-center justify-center transition-soft",
-                                card.color === 'blue' && "bg-blue-50 text-blue-500",
-                                card.color === 'orange' && "bg-orange-50 text-orange-500",
-                                card.color === 'purple' && "bg-purple-50 text-purple-500",
-                                card.color === 'green' && "bg-green-50 text-green-500",
-                            )}>
-                                {React.cloneElement(card.icon as React.ReactElement<any>, { className: 'w-6 h-6' })}
+        <DashboardLayout>
+            <div className="p-8 lg:p-12 space-y-12 pb-24">
+                <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 text-center md:text-left">
+                    <div className="space-y-3">
+                        <span className="text-orange-500 font-bold uppercase tracking-[0.3em] text-[10px]">Network Integrity</span>
+                        <h1 className="text-4xl lg:text-5xl">Admin <span className="text-orange-500">Hub</span></h1>
+                        <p className="text-zinc-500 font-medium text-lg">System-wide performance metrics and operational overview.</p>
+                    </div>
+                    <div className="flex justify-center gap-4">
+                        <div className="px-6 py-4 bg-zinc-900 rounded-3xl text-white flex items-center gap-3">
+                            <Activity className="w-5 h-5 text-orange-500" />
+                            <div className="text-left">
+                                <p className="text-[8px] font-black uppercase tracking-widest text-zinc-500">System Status</p>
+                                <p className="text-xs font-black uppercase tracking-widest">Operational</p>
                             </div>
-                            <div className="mt-6 space-y-1">
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">{card.label}</p>
-                                <h3 className="text-zinc-900">{card.value}</h3>
-                            </div>
-                        </motion.div>
-                    ))
-                )}
-            </div>
+                        </div>
+                    </div>
+                </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <Link href="/admin/users" className="p-8 bg-zinc-950 text-white rounded-[40px] space-y-4 hover:scale-[1.02] transition-soft shadow-2xl shadow-zinc-950/20 active:scale-95 group">
-                    <div className="p-4 bg-white/10 rounded-2xl w-fit group-hover:bg-orange-500 transition-soft">
-                        <UserCog className="w-6 h-6" />
+                {/* Stats Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+                    <StatsCard label="Total Orders" value={totals.totalOrders} icon={ShoppingBag} trend={{ value: 12, isUp: true }} />
+                    <StatsCard label="Gross Revenue" value={totals.totalRevenue} icon={DollarSign} isCurrency trend={{ value: 8, isUp: true }} />
+                    <StatsCard label="Platform Users" value={totals.totalUsers} icon={Users} />
+                    <StatsCard label="Active Providers" value={totals.totalProviders} icon={Utensils} />
+                    <StatsCard label="Menu Items" value={totals.totalMeals} icon={Package} />
+                    <StatsCard label="Pending Orders" value={totals.pendingOrders} icon={AlertCircle} className="bg-orange-500 text-white" />
+                </div>
+
+                {/* Charts Row */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <div className="lg:col-span-8 bg-white p-10 rounded-[40px] border border-zinc-100 shadow-xl shadow-zinc-200/20 space-y-8">
+                        <div>
+                            <h3 className="text-2xl font-display font-black text-zinc-900 tracking-tight">Growth Trends</h3>
+                            <p className="text-sm text-zinc-500 font-medium">Monthly order and revenue flow for the last 6 months</p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                            <div className="space-y-6">
+                                <h4 className="text-xs font-black uppercase tracking-widest text-zinc-400">Order Volume</h4>
+                                <OrdersBarChart data={trends} height={300} />
+                            </div>
+                            <div className="space-y-6">
+                                <h4 className="text-xs font-black uppercase tracking-widest text-zinc-400">Revenue Flow</h4>
+                                <RevenueLineChart data={trends} height={300} />
+                            </div>
+                        </div>
                     </div>
-                    <h3 className="">User Management</h3>
-                    <p className="text-zinc-400 text-sm font-medium">Suspend or activate accounts across the platform</p>
-                </Link>
-                <Link href="/admin/categories" className="p-8 bg-white border border-zinc-100 rounded-[40px] space-y-4 hover:scale-[1.02] transition-soft shadow-xl shadow-zinc-200/30 active:scale-95 group">
-                    <div className="p-4 bg-zinc-50 rounded-2xl w-fit group-hover:bg-orange-500 group-hover:text-white transition-soft">
-                        <LayoutGrid className="w-6 h-6" />
+                    <div className="lg:col-span-4 bg-white p-10 rounded-[40px] border border-zinc-100 shadow-xl shadow-zinc-200/20 space-y-8 flex flex-col justify-center">
+                        <div className="text-center">
+                            <h3 className="text-2xl font-display font-black text-zinc-900 tracking-tight">Order Status</h3>
+                            <p className="text-sm text-zinc-500 font-medium">Global distribution</p>
+                        </div>
+                        <StatusPieChart data={statusDistribution} height={350} />
                     </div>
-                    <h3 className="text-zinc-900">Categories</h3>
-                    <p className="text-zinc-500 text-sm font-medium">Manage the global taxonomy of available meals</p>
-                </Link>
-                <Link href="/admin/orders" className="p-8 bg-white border border-zinc-100 rounded-[40px] space-y-4 hover:scale-[1.02] transition-soft shadow-xl shadow-zinc-200/30 active:scale-95 group">
-                    <div className="p-4 bg-zinc-50 rounded-2xl w-fit group-hover:bg-orange-500 group-hover:text-white transition-soft">
-                        <Activity className="w-6 h-6" />
-                    </div>
-                    <h3 className="text-zinc-900">All Orders</h3>
-                    <p className="text-zinc-500 text-sm font-medium">Monitor and audit every transaction on FoodHub</p>
-                </Link>
+                </div>
+
+                {/* Table Row */}
+                <RecentOrdersTable orders={recentOrders} isAdmin />
             </div>
-        </div>
+        </DashboardLayout>
     );
 };
 

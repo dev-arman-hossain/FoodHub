@@ -142,6 +142,43 @@ const updateOrderStatus = async (
     return prisma.order.update({ where: { id: orderId }, data: { status: newStatus } });
 };
 
+const getCustomerStats = async (customerId: string) => {
+    const [totalOrders, spentData, activeOrders, recentOrders, statusDistribution] = await Promise.all([
+        prisma.order.count({ where: { customerId } }),
+        prisma.order.aggregate({
+            where: { customerId, status: 'DELIVERED' },
+            _sum: { totalAmount: true },
+        }),
+        prisma.order.count({
+            where: { customerId, status: { in: ['PLACED', 'PREPARING', 'READY'] } },
+        }),
+        prisma.order.findMany({
+            where: { customerId },
+            take: 3,
+            orderBy: { createdAt: 'desc' },
+            include: { provider: { select: { businessName: true, logoUrl: true } } },
+        }),
+        prisma.order.groupBy({
+            by: ['status'],
+            where: { customerId },
+            _count: { id: true },
+        }),
+    ]);
+
+    return {
+        totals: {
+            totalOrders,
+            totalSpent: Number(spentData._sum.totalAmount || 0),
+            activeOrders,
+        },
+        recentOrders,
+        statusDistribution: statusDistribution.map(s => ({
+            name: s.status,
+            value: s._count.id,
+        })),
+    };
+};
+
 export const OrderService = {
     createOrder,
     getMyOrders,
@@ -149,4 +186,5 @@ export const OrderService = {
     cancelOrder,
     getProviderOrders,
     updateOrderStatus,
+    getCustomerStats,
 };
