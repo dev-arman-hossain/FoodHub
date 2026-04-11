@@ -16,9 +16,13 @@ const COLORS = ['#f97316', '#3b82f6', '#22c55e', '#ef4444', '#a855f7', '#ec4899'
 const LIGHT_COLORS = ['#fb923c', '#60a5fa', '#4ade80', '#f87171', '#c084fc', '#f472b6'];
 
 export const OrdersBarChart: React.FC<ChartProps> = ({ data, height = 350 }) => {
+    const chartData = data && data.length > 0 ? data : [
+        { name: 'Week 1', orders: 0 }, { name: 'Week 2', orders: 0 },
+        { name: 'Week 3', orders: 0 }, { name: 'Week 4', orders: 0 }
+    ];
     return (
         <ResponsiveContainer width="100%" height={height}>
-            <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+            <BarChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f4f4f5" />
                 <XAxis 
                     dataKey="name" 
@@ -54,9 +58,13 @@ export const OrdersBarChart: React.FC<ChartProps> = ({ data, height = 350 }) => 
 };
 
 export const RevenueLineChart: React.FC<ChartProps> = ({ data, height = 350 }) => {
+    const chartData = data && data.length > 0 ? data : [
+        { name: 'Week 1', revenue: 0 }, { name: 'Week 2', revenue: 0 },
+        { name: 'Week 3', revenue: 0 }, { name: 'Week 4', revenue: 0 }
+    ];
     return (
         <ResponsiveContainer width="100%" height={height}>
-            <LineChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+            <LineChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f4f4f5" />
                 <XAxis 
                     dataKey="name" 
@@ -94,11 +102,12 @@ export const RevenueLineChart: React.FC<ChartProps> = ({ data, height = 350 }) =
 };
 
 export const StatusPieChart: React.FC<ChartProps> = ({ data, height = 350 }) => {
+    const chartData = data && data.length > 0 ? data : [{ name: 'No Orders', value: 1 }];
     return (
         <ResponsiveContainer width="100%" height={height}>
             <PieChart>
                 <Pie
-                    data={data}
+                    data={chartData}
                     cx="50%"
                     cy="50%"
                     innerRadius={60}

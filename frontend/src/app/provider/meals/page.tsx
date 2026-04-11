@@ -7,6 +7,7 @@ import { Package, Trash2, Edit3, Plus, Search, ChevronRight, X, Loader2, Image a
 import { formatPrice, cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CardSkeleton } from '@/components/shared/CardSkeleton';
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
 
 const ProviderMealsPage = () => {
     const [meals, setMeals] = useState<Meal[]>([]);
@@ -93,7 +94,8 @@ const ProviderMealsPage = () => {
     };
 
     return (
-        <div className="container mx-auto px-6 py-12 md:py-20 space-y-12">
+        <DashboardLayout>
+            <div className="container mx-auto px-6 py-12 md:py-20 space-y-12">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
                 <div className="space-y-2">
                     <h1 className="text-5xl font-display font-black text-zinc-900 tracking-tight">Menu Management</h1>
@@ -252,7 +254,8 @@ const ProviderMealsPage = () => {
                     </div>
                 )}
             </AnimatePresence>
-        </div>
+            </div>
+        </DashboardLayout>
     );
 };
 

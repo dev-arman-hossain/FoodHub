@@ -7,6 +7,7 @@ import { ShoppingBag, Clock, MapPin, User as UserIcon, CheckCircle2, Truck, Uten
 import { formatPrice, cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { OrderSkeleton } from '@/components/shared/OrderSkeleton';
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
 
 const ProviderOrdersPage = () => {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -43,7 +44,8 @@ const ProviderOrdersPage = () => {
     const statusFlow = ['PLACED', 'PREPARING', 'READY', 'DELIVERED'];
 
     return (
-        <div className="container mx-auto px-6 py-12 md:py-20 space-y-12">
+        <DashboardLayout>
+            <div className="container mx-auto px-6 py-12 md:py-20 space-y-12">
             <div className="space-y-2">
                 <h1 className="text-5xl font-display font-black text-zinc-900 tracking-tight">Orders Management</h1>
                 <p className="text-zinc-500 font-medium text-lg">Manage your active and completed customer orders</p>
@@ -149,7 +151,8 @@ const ProviderOrdersPage = () => {
                     <h3 className="text-xl font-display font-medium text-zinc-400 uppercase tracking-widest italic">No orders to manage</h3>
                 </div>
             )}
-        </div>
+            </div>
+        </DashboardLayout>
     );
 };
 
