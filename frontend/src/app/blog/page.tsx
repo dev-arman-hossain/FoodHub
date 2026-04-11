@@ -30,7 +30,7 @@ const blogs = [
     excerpt: 'How local providers are changing the landscape of online food ordering.',
     date: 'April 05, 2026',
     author: 'John Miller',
-    image: 'https://images.unsplash.com/photo-1488459711635-de8291fe5bb7?auto=format&fit=crop&q=80',
+    image: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&q=80',
     category: 'Food Trends',
   },
 ];
