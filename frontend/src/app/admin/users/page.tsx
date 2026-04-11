@@ -7,6 +7,7 @@ import { Users, Shield, ShieldAlert, CheckCircle, XCircle, Search, Mail, Calenda
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { TableSkeleton } from '@/components/shared/TableSkeleton';
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
 
 const AdminUsersPage = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -48,7 +49,8 @@ const AdminUsersPage = () => {
     );
 
     return (
-        <div className="container mx-auto px-6 py-12 md:py-20 space-y-12">
+        <DashboardLayout>
+            <div className="container mx-auto px-6 py-12 md:py-20 space-y-12 max-w-6xl">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
                 <div className="space-y-2">
                     <h1 className="text-5xl font-display font-black text-zinc-900 tracking-tight">Platform Users</h1>
@@ -139,7 +141,8 @@ const AdminUsersPage = () => {
                     )}
                 </div>
             )}
-        </div>
+            </div>
+        </DashboardLayout>
     );
 };
 

@@ -6,6 +6,7 @@ import { Order } from '@/types';
 import { Package, Clock, CheckCircle2, ChevronRight, ShoppingBag, Store, User as UserIcon } from 'lucide-react';
 import { formatPrice, cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
 
 const AdminOrdersPage = () => {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -35,7 +36,8 @@ const AdminOrdersPage = () => {
     };
 
     return (
-        <div className="container mx-auto px-6 py-12 md:py-20 space-y-12">
+        <DashboardLayout>
+            <div className="container mx-auto px-6 py-12 md:py-20 space-y-12">
             <div className="space-y-2">
                 <h1 className="text-5xl font-display font-black text-zinc-900 tracking-tight">Global Orders</h1>
                 <p className="text-zinc-500 font-medium text-lg">Comprehensive audit of all platform transactions</p>
@@ -105,7 +107,8 @@ const AdminOrdersPage = () => {
                     </div>
                 </div>
             )}
-        </div>
+            </div>
+        </DashboardLayout>
     );
 };
 

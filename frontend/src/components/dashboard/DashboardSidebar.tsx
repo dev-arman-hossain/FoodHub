@@ -47,8 +47,27 @@ const SidebarLink = ({
 );
 
 const DashboardSidebar = ({ className }: { className?: string }) => {
-    const { user, logout } = useAuth();
+    const { user, logout, loading } = useAuth();
     const pathname = usePathname();
+
+    if (loading) {
+        return (
+            <aside className={cn(
+                "flex flex-col bg-white border-r border-zinc-100 h-screen sticky top-0 py-8 px-4 w-[280px]",
+                className
+            )}>
+                <div className="px-6 mb-12 space-y-3">
+                    <div className="h-2 w-16 bg-zinc-200 rounded animate-pulse" />
+                    <div className="h-6 w-32 bg-zinc-200 rounded animate-pulse" />
+                </div>
+                <nav className="flex-1 space-y-2 px-2">
+                    {[1, 2, 3, 4].map(i => (
+                        <div key={i} className="h-12 w-full bg-zinc-50 rounded-2xl animate-pulse" />
+                    ))}
+                </nav>
+            </aside>
+        );
+    }
 
     if (!user) return null;
 

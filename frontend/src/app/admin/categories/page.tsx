@@ -6,6 +6,7 @@ import { Category } from '@/types';
 import { Plus, Trash2, Edit3, X, Loader2, Image as ImageIcon, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
 
 const AdminCategoriesPage = () => {
     const [categories, setCategories] = useState<Category[]>([]);
@@ -70,7 +71,8 @@ const AdminCategoriesPage = () => {
     };
 
     return (
-        <div className="container mx-auto px-6 py-12 md:py-20 space-y-12">
+        <DashboardLayout>
+            <div className="container mx-auto px-6 py-12 md:py-20 space-y-12">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
                 <div className="space-y-2">
                     <h1 className="text-5xl font-display font-black text-zinc-900 tracking-tight">Taxonomy Control</h1>
@@ -169,7 +171,8 @@ const AdminCategoriesPage = () => {
                     </div>
                 )}
             </AnimatePresence>
-        </div>
+            </div>
+        </DashboardLayout>
     );
 };
 

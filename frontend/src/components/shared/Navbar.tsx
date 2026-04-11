@@ -197,7 +197,7 @@ const NavLink = ({
 
 // ─── Main Component ─────────────────────────────────────────────────────────
 const Navbar = () => {
-    const { user, logout } = useAuth();
+    const { user, logout, loading } = useAuth();
     const { totalItems } = useCart();
     const pathname = usePathname();
 
@@ -357,7 +357,9 @@ const Navbar = () => {
 
                         <div className="w-px h-5 bg-zinc-200 mx-1" />
 
-                        {user ? (
+                        {loading ? (
+                            <div className="w-10 h-10 rounded-full bg-zinc-100 animate-pulse border-2 border-white shadow-sm" />
+                        ) : user ? (
                             <div className="relative group">
                                 <button
                                     className="flex items-center gap-2.5 px-3 py-2 rounded-2xl hover:bg-zinc-50 transition-all duration-300"
@@ -585,7 +587,15 @@ const Navbar = () => {
 
                             {/* Drawer Footer */}
                             <div className="p-4 border-t border-zinc-100 bg-zinc-50/80">
-                                {user ? (
+                                {loading ? (
+                                    <div className="flex items-center gap-3 p-3">
+                                        <div className="w-10 h-10 rounded-full bg-zinc-200 animate-pulse" />
+                                        <div className="space-y-2 flex-1">
+                                            <div className="h-4 bg-zinc-200 rounded animate-pulse w-1/2" />
+                                            <div className="h-3 bg-zinc-200 rounded animate-pulse w-1/3" />
+                                        </div>
+                                    </div>
+                                ) : user ? (
                                     <div className="space-y-2">
                                         <Link
                                             href={

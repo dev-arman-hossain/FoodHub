@@ -7,6 +7,7 @@ import { Package, Clock, MapPin, ChevronRight, CheckCircle2, XCircle, RotateCcw,
 import { cn, formatPrice } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
 
 const OrdersPage = () => {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -46,7 +47,8 @@ const OrdersPage = () => {
     };
 
     return (
-        <div className="container mx-auto px-6 py-20 space-y-12">
+        <DashboardLayout>
+            <div className="container mx-auto px-6 py-12 lg:py-20 space-y-12 max-w-5xl">
             <div className="space-y-2">
                 <h1 className="text-zinc-900 tracking-tight">Order History</h1>
                 <p className="text-zinc-500 font-medium text-lg">Track your current and past culinary experiences</p>
@@ -120,7 +122,8 @@ const OrdersPage = () => {
                     </Link>
                 </div>
             )}
-        </div>
+            </div>
+        </DashboardLayout>
     );
 };
 
